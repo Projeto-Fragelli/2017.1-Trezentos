@@ -21,16 +21,23 @@ public class MainActivity extends AppCompatActivity{
 
     private BottomNavigationView bottomNavigationView;
     private Fragment selectedFragment;
+    private Toolbar toolbar = null;
+    MenuItem itemSeach = null;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         // Inflate the menu; this adds items to the action bar if it is present.
+
+        itemSeach = (MenuItem) findViewById(R.id.search);
+
+
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
+
         int id = item.getItemId();
         // Noinspection SimplifiableIfStatement
         if(id == R.id.search_classes){
@@ -47,13 +54,17 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         selectedFragment = null;
 
+
         SharedPreferences session = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if(AccessToken.getCurrentAccessToken() == null && !session.getBoolean("IsUserLogged", false)){
             goLoginScreen();
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Salas");
         setSupportActionBar(toolbar);
+
+
 
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_nav);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView
@@ -62,19 +73,23 @@ public class MainActivity extends AppCompatActivity{
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.salas_item:
+                        toolbar.setTitle("Salas");
                         selectedFragment = ClassFragment.getInstance();
                         break;
 
                     case R.id.usuario_item:
-                        selectedFragment = UserFragment.getInstance();
+                        toolbar.setTitle("Explorar");
+                        selectedFragment = ExploreFragment.getInstance();
                         break;
 
                     case R.id.about_item:
-                        selectedFragment = AboutFragment.getInstance();
+                        toolbar.setTitle("Perfil");
+                        selectedFragment = UserFragment.getInstance();
                         break;
 
                     case R.id.avaliacao_item:
-                        selectedFragment = EvaluationFragment.getInstance();
+                        toolbar.setTitle("Sobre");
+                        selectedFragment = AboutFragment.getInstance();
                         break;
                 }
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

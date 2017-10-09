@@ -6,10 +6,14 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.logging.Logger;
 import java.util.concurrent.ExecutionException;
 
 import fga.mds.gpp.trezentos.DAO.PostDao;
+import fga.mds.gpp.trezentos.DAO.RequestHandler;
+import fga.mds.gpp.trezentos.DAO.URLs;
 import fga.mds.gpp.trezentos.Model.UserAccount;
 import fga.mds.gpp.trezentos.Exception.UserException;
 import fga.mds.gpp.trezentos.Model.Util.PasswordUtil;
@@ -37,9 +41,10 @@ public class UserAccountControl {
     }
 
     public String validateSignUp(String name, String email, String password,
-                                 String passwordConfirmation){
+                                 String passwordConfirmation, String telephoneDDI,
+                                 String telephoneDDD, String telephoneNumber){
         try{
-            userAccount = new UserAccount(name, email, password, passwordConfirmation);
+            userAccount = new UserAccount(name, email, password, passwordConfirmation, telephoneDDI, telephoneDDD, telephoneNumber);
         }catch(UserException userException){
             return userException.getMessage();
         }
@@ -48,47 +53,88 @@ public class UserAccountControl {
     }
 
     public String validateSignUpResponse(){
-        PostDao postDao = new PostDao(getUserUrl(userAccount, false), null, "");
+
+        RequestHandler requestHandler = new RequestHandler(URLs.URL_REGISTER, getRegisterParams(userAccount, false));
+
         String serverResponse = "404";
 
         try{
-            serverResponse = postDao.execute().get();
+            serverResponse = requestHandler.execute().get();
         }catch(InterruptedException e){
             e.printStackTrace();
         }catch(ExecutionException e){
             e.printStackTrace();
         }
-
+        Log.d("RESPONSE", ""+serverResponse);
         return serverResponse;
     }
 
-    // Method that creates a url with parameters and sends it to api, it returns a response if it worked or not
-    public String getUserUrl(UserAccount userAccount, Boolean isFromFacebook) {
-        String url = "https://trezentos-api.herokuapp.com/api/user/register";
-        HttpUrl.Builder builder = HttpUrl.parse(url).newBuilder();
+    public String validateForgotPasswordResponse(String recoverEmail){
 
-        builder.addQueryParameter("email", userAccount.getEmail());
-        builder.addQueryParameter("salt", userAccount.getSalt());
-        builder.addQueryParameter("password", userAccount.getPassword());
-        builder.addQueryParameter("name", userAccount.getName());
-        builder.addQueryParameter("facebook", isFromFacebook.toString());
+        RequestHandler requestHandler = new RequestHandler(URLs.URL_RESET_PASSWORD, getForgotPasswordParams(recoverEmail));
 
-        return builder.build().toString();
+        String serverResponse = "";
+
+        try{
+            serverResponse = requestHandler.execute().get();
+        }catch(InterruptedException e){
+            e.printStackTrace();
+        }catch(ExecutionException e){
+            e.printStackTrace();
+        }
+        Log.d("RESPONSE", ""+serverResponse);
+        return serverResponse;
+    }
+
+
+    public HashMap<String, String>  getLoginParams(UserAccount userAccount, Boolean isFromFacebook) {
+
+        HashMap<String, String> params = new HashMap<>();
+        params.put("PersonEmail", userAccount.getEmail());
+        params.put("PersonPassword", userAccount.getPassword());
+
+        return params;
 
     }
 
+    public HashMap<String, String>  getRegisterParams(UserAccount userAccount, Boolean isFromFacebook) {
+
+        HashMap<String, String> params = new HashMap<>();
+        params.put("PersonName", userAccount.getName());
+        params.put("PersonEmail", userAccount.getEmail());
+        params.put("PersonPassword", userAccount.getPassword());
+        params.put("PersonIsFromFacebook", isFromFacebook.toString());
+        params.put("PersonTelephoneDDI", userAccount.getTelephoneDDI());
+        params.put("PersonTelephoneDDD", userAccount.getTelephoneDDD());
+        params.put("PersonTelephoneNumber", userAccount.getTelephoneNumber());
+
+        return params;
+
+    }
+
+    public HashMap<String, String>  getForgotPasswordParams(String recoverEmail) {
+
+        HashMap<String, String> params = new HashMap<>();
+
+        params.put("PersonEmail", recoverEmail);
+
+        return params;
+
+    }
+
+
     public void authenticateLoginFb(JSONObject object){
         try{
-            String name = object.getString("name");
-            String fEmail = object.getString("email");
+            String name = object.getString("PersonName");
+            String fEmail = object.getString("PersonEmail");
             UserAccount fbUserAccount = new UserAccount();
             fbUserAccount.setEmail(fEmail);
             fbUserAccount.setName(name);
 
-            String urlWithParameters = getUserUrl(fbUserAccount, true);
-            PostDao postDao = new PostDao(urlWithParameters, null, "");
+            //String urlWithParameters = getUserUrl(fbUserAccount, true);
+            //PostDao postDao = new PostDao(urlWithParameters, null, "");
 
-            postDao.execute();
+            //postDao.execute();
         }catch(JSONException | UserException e){
             e.printStackTrace();
         }
@@ -98,7 +144,7 @@ public class UserAccountControl {
         try{
             userAccount = new UserAccount();
             userAccount.setEmail(email);
-            userAccount.authenticatePassword(password);
+            userAccount.authenticatePassword(password); //Set password
         }catch(UserException userException){
             return userException.getMessage();
         }
@@ -107,12 +153,13 @@ public class UserAccountControl {
     }
 
     public String validateSignInResponse(){
-        String urlWithParameters = getSignInUrl(userAccount);
-        PostDao postDao = new PostDao(urlWithParameters, null, "");
-        String serverResponse = "404";
+
+        RequestHandler requestHandler = new RequestHandler(URLs.URL_LOGIN, getLoginParams(userAccount, false));
+
+        String serverResponse = "";
 
         try{
-            serverResponse = postDao.execute().get();
+            serverResponse = requestHandler.execute().get();
         }catch(InterruptedException e){
             e.printStackTrace();
         }catch(ExecutionException e){
@@ -124,38 +171,51 @@ public class UserAccountControl {
 
     // Method that creates a url with parameters and sends it to api, it returns a response if it worked or not
     private String getSignInUrl(UserAccount userAccount){
-        String url = "https://trezentos-api.herokuapp.com/api/user/login";
+        String url = "metodo300.com/android/api/user/login.php";
 
         HttpUrl.Builder builder = HttpUrl.parse(url).newBuilder();
-        builder.addQueryParameter("email", userAccount.getEmail());
-        builder.addQueryParameter("password", userAccount.getPassword());
+        builder.addQueryParameter("PersonEmail", userAccount.getEmail());
+        builder.addQueryParameter("PersonPassword", userAccount.getPassword());
 
         return builder.build().toString();
     }
 
 
-    public void validatePassword(String serverResponse, String password) throws UserException {
+    public void validatePerson(String serverResponse) throws UserException, JSONException {
         JSONObject object = getObjectFromServerResponse(serverResponse);
-        String hashedPassword = null, salt = null;
+        JSONObject userJson = object.getJSONObject("person");
 
-        try{
-            hashedPassword = object.getString("password");
-            salt = object.getString("salt");
-        }catch(JSONException e){
-            e.printStackTrace();
-        }
         try {
-            userAccount.setName(object.getString("name"));
+            userAccount.setName(userJson.getString("PersonName"));
+            userAccount.setEmail(userJson.getString("PersonEmail"));
+            userAccount.setTelephoneDDI(userJson.getString("PersonTelephoneDDI"));
+            userAccount.setTelephoneDDD(userJson.getString("PersonTelephoneDDD"));
+            userAccount.setTelephoneNumber(userJson.getString("PersonTelephoneNumber"));
+            userAccount.setIsFromFacebook(userJson.getBoolean("PersonIsFromFacebook"));
+
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
+        Log.d("TESTE", userJson.getString("PersonTelephoneDDI"));
+        Log.d("TESTE", userAccount.getTelephoneDDI() + userAccount.getTelephoneDDD() + userAccount.getTelephoneNumber());
+        if(!object.getBoolean("error")){
+            logInUser();
+        }else{
+            logOutUser();
+        }
+
+
+        /*
         if(PasswordUtil.decryptPass(hashedPassword, salt, password)){
             logInUser();
         }else{
             logOutUser();
             throw new UserException(context.getString(R.string.invalid_login));
         }
+        */
+
     }
 
     private JSONObject getObjectFromServerResponse(String serverResponse){
@@ -177,7 +237,14 @@ public class UserAccountControl {
                 .putBoolean("IsUserLogged", true)
                 .putString("userEmail", userAccount.getEmail())
                 .putString("userName", userAccount.getName())
+                .putString("userTelephoneDDI", userAccount.getTelephoneDDI())
+                .putString("userTelephoneDDD", userAccount.getTelephoneDDD())
+                .putString("userTelephoneNumber", userAccount.getTelephoneNumber())
                 .apply();
+
+
+
+
     }
 
     public void logOutUser(){
