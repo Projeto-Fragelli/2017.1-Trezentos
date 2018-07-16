@@ -133,6 +133,32 @@ public class UserClassControl {
 
     }
 
+    public String deleteStudentFromClass(String classId, String userId) throws UserException {
+        HashMap<String, String> params = new HashMap<>();
+        Log.d("DELETE", classId);
+        Log.d("DELETE", userId);
+
+
+        params.put("classID", classId);
+        params.put("userID", userId);
+
+        RequestHandler requestHandler = new RequestHandler(URLs.URL_DELETE_STUDENT_FROM_CLASS, params);
+
+        String serverResponse = "404";
+
+        try{
+            serverResponse = requestHandler.execute().get();
+        }catch(InterruptedException e){
+            e.printStackTrace();
+        }catch(ExecutionException e){
+            e.printStackTrace();
+        }
+        Log.d("RESPONSE", ""+serverResponse);
+        //dialog.dismiss();
+        return serverResponse;
+
+    }
+
 
     public String validateJoinClass(UserClass userClass, String password, String studentEmail) throws UserClassException, ExecutionException, InterruptedException {
         String serverResponse;
