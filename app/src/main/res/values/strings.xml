@@ -147,4 +147,5 @@
     <string name="mine_group">Meu Grupo</string>
     <string name="return_to_class">Voltar</string>
     <string name="save_class">Salvar</string>
+    <string name="out_of_class">Sair da sala</string>
 </resources>
