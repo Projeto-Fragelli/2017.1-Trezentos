@@ -1,10 +1,8 @@
 package fga.mds.gpp.trezentos.View.ServerOperation;
 
 import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -39,7 +37,7 @@ public class ServerOperationClassFragment extends AsyncTask<String, Void, ArrayL
     private ClassFragmentAdapter classFragmentAdapter;
     public ProgressBar progressBar;
     public UserClassControl userClassControl;
-    private LinearLayout noInternetLayout;
+    private LinearLayout noUserClass;
     private boolean isInit;
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -55,21 +53,20 @@ public class ServerOperationClassFragment extends AsyncTask<String, Void, ArrayL
                                         ProgressBar progressBar,
                                         RecyclerView recyclerView,
                                         ClassFragment classFragment,
-                                        LinearLayout noInternetLayout){
+                                        LinearLayout noUserClass){
 
 
-        this.noInternetLayout = noInternetLayout;
         this.isInit = isInit;
         this.swipeRefreshLayout = swipeRefreshLayout;
         this.progressBar = progressBar;
         this.classFragment = classFragment;
         this.recyclerView = recyclerView;
+        this.noUserClass = noUserClass;
 
     }
 
     @Override
     protected void onPreExecute() {
-
 
         userClassControl =
                 UserClassControl.getInstance(getApplicationContext());
@@ -85,17 +82,13 @@ public class ServerOperationClassFragment extends AsyncTask<String, Void, ArrayL
     @Override
     protected ArrayList<UserClass> doInBackground(String... params) {
 
-        if(isInternetAvailable() ) { //If internet is ok
-
-            try {
-                return userClassControl.getClasses(userId);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
+        try {
+            return userClassControl.getClasses(userId);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return null;
 
+        return null;
     }
 
     @Override
@@ -112,7 +105,6 @@ public class ServerOperationClassFragment extends AsyncTask<String, Void, ArrayL
 
         classFragmentAdapter = new ClassFragmentAdapter(result, classFragment.getContext());
 
-
         classFragmentAdapter.setOnItemClickListener(callJoinClass());
 
         RecyclerView.LayoutManager layout = new LinearLayoutManager(classFragment.getContext(),
@@ -121,25 +113,14 @@ public class ServerOperationClassFragment extends AsyncTask<String, Void, ArrayL
         recyclerView.setLayoutManager(layout);
         recyclerView.setAdapter(classFragmentAdapter);
 
+        if(result == null){
+            noUserClass.setVisibility(View.VISIBLE);
+        } else {
+            noUserClass.setVisibility(View.GONE);
+        }
 
-//        noInternetLayout.setVisibility(View.VISIBLE);
         super.onPostExecute(result);
 
-
-    }
-
-    public void setLayout(){
-        recyclerView.setVisibility(View.VISIBLE);
-        userClasses = classFragment.getUserClasses();
-        classFragmentAdapter = new ClassFragmentAdapter(classFragment.getUserClasses(), classFragment.getContext());
-
-        classFragmentAdapter.setOnItemClickListener(callJoinClass());
-
-        RecyclerView.LayoutManager layout = new LinearLayoutManager(classFragment.getContext(),
-                LinearLayoutManager.VERTICAL,
-                false);
-        recyclerView.setLayoutManager(layout);
-        recyclerView.setAdapter(classFragmentAdapter);
     }
 
     private ClassViewHolder.OnItemClickListener callJoinClass() {
@@ -183,24 +164,5 @@ public class ServerOperationClassFragment extends AsyncTask<String, Void, ArrayL
         return tempList;
     }
 
-    public boolean isNetworkAvailable(Context context) {
-        final ConnectivityManager connectivityManager =
-            ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
-
-        return connectivityManager.getActiveNetworkInfo() != null &&
-                connectivityManager.getActiveNetworkInfo().isConnected();
-    }
-
-    private boolean isInternetAvailable() {
-        try {
-            final InetAddress address = InetAddress.getByName("www.google.com");
-            if(!address.equals("")){
-                return true;
-            }
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
 }

@@ -51,14 +51,13 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         UserAccountControl userAccountControl = UserAccountControl.getInstance(getApplicationContext());
-        if(userAccountControl.isLoggedUser()){
 
-        }else{
+        if(!userAccountControl.isLoggedUser()){
             userAccountControl.logOutUser();
             goSignInScreen();
         }
-        selectedFragment = null;
 
+        selectedFragment = null;
         initToolbar();
 
         bottomNavigationView = findViewById(R.id.bottom_nav);
@@ -95,11 +94,18 @@ public class MainActivity extends AppCompatActivity{
 
         });
 
-        //Manually displaying the first fragment - one time only
+        showClassFragment();
+
+    }
+
+    public void showClassFragment(){
+        toolbar.setTitle("Salas");
+        bottomNavigationView.setSelectedItemId(R.id.salas_item);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame, ClassFragment.getInstance());
         transaction.commit();
     }
+
 
     private void initToolbar(){
         toolbar = findViewById(R.id.toolbar);
@@ -111,7 +117,7 @@ public class MainActivity extends AppCompatActivity{
         startActivity(new Intent(getApplicationContext(), SearchActivity.class));
     }
     private void goSignInScreen() {
-        Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+        Intent intent = new Intent(MainActivity.this, SignInActivity.class);
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
                 Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +27,7 @@ import org.json.JSONObject;
 import java.util.Arrays;
 import fga.mds.gpp.trezentos.Controller.UserAccountControl;
 import fga.mds.gpp.trezentos.Exception.UserException;
+import fga.mds.gpp.trezentos.Model.UserAccount;
 import fga.mds.gpp.trezentos.R;
 import fga.mds.gpp.trezentos.View.AboutOnLogin;
 
@@ -63,10 +65,9 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
             case R.id.button_login:
 
-                if(isNetworkAvailable(getApplicationContext()) && isOnline()){
+                userAccountControl = UserAccountControl.getInstance(getApplicationContext());
 
-
-                    userAccountControl = UserAccountControl.getInstance(getApplicationContext());
+                if(userAccountControl.isNetworkAvailable()){
 
                     String emailString = emailEditText.getText().toString();
                     String passwordString = passwordEditText.getText().toString();
@@ -91,7 +92,11 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                     }
 
                 }else{
-                    Toast.makeText(this, "Verifique sua conexão com a internet e tente novamente", Toast.LENGTH_LONG).show();
+                    Toast.makeText(
+                            this,
+                            "Verifique sua conexão com a internet e tente novamente",
+                            Toast.LENGTH_LONG
+                    ).show();
                 }
 
 
@@ -130,9 +135,9 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-
-
     private void facebookAPI(){
+        userAccountControl = UserAccountControl.getInstance(getApplicationContext());
+
         callbackManager = CallbackManager.Factory.create();
         loginFacebook = findViewById(R.id.button_sign_in_facebook);
         loginFacebook.setReadPermissions(Arrays.asList("email", "public_profile"));
@@ -141,6 +146,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onSuccess(LoginResult loginResult){
                 facebookLogin(loginResult);
+                userAccountControl.changeUserToLogged();
                 goToMain();
             }
 
@@ -189,9 +195,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                         userAccountControl.signInUserFromFacebook(jsonObject);
                     }
                 });
-
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,email,gender");
+        parameters.putString("fields", "id,first_name,last_name,email,gender");
         request.setParameters(parameters);
         request.executeAsync();
 
@@ -225,7 +230,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void goToMain() {
-        Intent intentGoMainActivity = new Intent(SignInActivity.this, MainActivity.class);
+        Intent intentGoMainActivity = new Intent(getApplicationContext(), MainActivity.class);
 
         intentGoMainActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
                 Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -237,34 +242,4 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    public boolean isNetworkAvailable(Context context) {
-        final ConnectivityManager connectivityManager =
-                ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
-
-        return connectivityManager.getActiveNetworkInfo() != null &&
-                connectivityManager.getActiveNetworkInfo().isConnected();
-    }
-
-    public boolean isOnline() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
-    }
-
-    /*
-    private boolean isInternetAvailable() {
-        try {
-            final InetAddress address = InetAddress.getByName("www.google.com");
-            if(!address.equals("")){
-                return true;
-            }
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-    */
-
-    /* TEST IT IN REAL DEVISE */
 }

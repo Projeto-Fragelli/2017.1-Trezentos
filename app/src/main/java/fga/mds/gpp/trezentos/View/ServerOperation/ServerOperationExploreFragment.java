@@ -1,11 +1,7 @@
 package fga.mds.gpp.trezentos.View.ServerOperation;
-
-import android.app.Application;
+import android.widget.Toast;
 import android.app.Dialog;
-import android.app.Fragment;
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,12 +9,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,6 +22,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
+import fga.mds.gpp.trezentos.Controller.UserAccountControl;
+import fga.mds.gpp.trezentos.View.Activity.MainActivity;
 import fga.mds.gpp.trezentos.View.Adapters.ClassFragmentAdapter;
 import fga.mds.gpp.trezentos.Controller.UserClassControl;
 import fga.mds.gpp.trezentos.DAO.RequestHandler;
@@ -52,6 +47,7 @@ public class ServerOperationExploreFragment extends AsyncTask<String, Void, Arra
     private ClassFragmentAdapter classFragmentAdapter;
     private RecyclerView recyclerView;
     private ExploreFragment exploreFragment;
+    private String userId;
 
     public ServerOperationExploreFragment(boolean isInit,
                                           SwipeRefreshLayout swipeRefreshLayout,
@@ -64,12 +60,16 @@ public class ServerOperationExploreFragment extends AsyncTask<String, Void, Arra
         this.exploreFragment = exploreFragment;
         this.recyclerView = recyclerView;
 
-        userClassControl = UserClassControl.getInstance(getApplicationContext());
-
     }
 
     @Override
     protected void onPreExecute() {
+
+        userClassControl =
+                UserClassControl.getInstance(getApplicationContext());
+        SharedPreferences session = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+        userId = session.getString("userId", "");
 
         if(isInit){
             progressBar.setVisibility(View.VISIBLE);
@@ -80,17 +80,12 @@ public class ServerOperationExploreFragment extends AsyncTask<String, Void, Arra
     @Override
     protected ArrayList<UserClass> doInBackground(String... strings) {
 
-        if(isInternetAvailable() ) { //If internet is ok
-
-            try {
-                return userClassControl.getExploreClasses();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }else{
-            return null;
+        try {
+            return userClassControl.getExploreClasses(userId);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+
         return null;
 
     }
@@ -100,6 +95,12 @@ public class ServerOperationExploreFragment extends AsyncTask<String, Void, Arra
 
         exploreFragment.setUserClasses(result);
         userClasses = result;
+
+        if (userClasses != null){
+            for(UserClass u: userClasses){
+                Log.d("TESTESTES", u.getClassName());
+            }
+        }
 
         if(isInit){
             progressBar.setVisibility(View.GONE);
@@ -120,40 +121,6 @@ public class ServerOperationExploreFragment extends AsyncTask<String, Void, Arra
         recyclerView.setAdapter(classFragmentAdapter);
 
         super.onPostExecute(result);
-    }
-
-    public void setLayout(){
-        recyclerView.setVisibility(View.VISIBLE);
-        userClasses = exploreFragment.getUserClasses();
-        classFragmentAdapter = new ClassFragmentAdapter(exploreFragment.getUserClasses(), exploreFragment.getContext());
-
-        classFragmentAdapter.setOnItemClickListener(callJoinClass());
-
-        RecyclerView.LayoutManager layout = new LinearLayoutManager(exploreFragment.getContext(),
-                LinearLayoutManager.VERTICAL,
-                false);
-        recyclerView.setLayoutManager(layout);
-        recyclerView.setAdapter(classFragmentAdapter);
-    }
-
-    public boolean isNetworkAvailable(Context context) {
-        final ConnectivityManager connectivityManager =
-            ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
-
-        return connectivityManager.getActiveNetworkInfo() != null &&
-                connectivityManager.getActiveNetworkInfo().isConnected();
-    }
-
-    private boolean isInternetAvailable() {
-        try {
-            final InetAddress address = InetAddress.getByName("www.google.com");
-            if(!address.equals("")){
-                return true;
-            }
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     private ClassViewHolder.OnItemClickListener callJoinClass() {
@@ -182,50 +149,65 @@ public class ServerOperationExploreFragment extends AsyncTask<String, Void, Arra
         dialogButtonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String classPassword = String.valueOf(textViewClassPassword.getText());
-                String classId = userClass.getIdClass();
-                SharedPreferences session = PreferenceManager
-                        .getDefaultSharedPreferences(getApplicationContext());
 
-                String userId = session.getString("userId","");
+                UserAccountControl userAccountControl =
+                        UserAccountControl.getInstance(getApplicationContext());
 
-                RequestHandler requestHandler = new RequestHandler(URLs.URL_INSERT_STUDENT_CLASS, getInsertStudentParams(userId, classId, classPassword));
+                if(userAccountControl.isNetworkAvailable()) {
+                    String classPassword = String.valueOf(textViewClassPassword.getText());
+                    String classId = userClass.getIdClass();
+                    SharedPreferences session = PreferenceManager
+                            .getDefaultSharedPreferences(getApplicationContext());
 
-                String serverResponse = "404";
+                    String userId = session.getString("userId","");
 
-                try{
-                    serverResponse = requestHandler.execute().get();
-                }catch(InterruptedException e){
-                    e.printStackTrace();
-                }catch(ExecutionException e){
-                    e.printStackTrace();
+                    RequestHandler requestHandler = new RequestHandler(URLs.URL_INSERT_STUDENT_CLASS, getInsertStudentParams(userId, classId, classPassword));
+
+                    String serverResponse = "404";
+
+                    try{
+                        serverResponse = requestHandler.execute().get();
+                    }catch(InterruptedException e){
+                        e.printStackTrace();
+                    }catch(ExecutionException e){
+                        e.printStackTrace();
+                    }
+                    Log.d("RESPONSE", "" + serverResponse);
+
+                    JSONObject object = null;
+                    try {
+                        object = new JSONObject(serverResponse);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    boolean error = false;
+                    String message = "";
+                    try {
+                        error = object.getBoolean("error");
+                        message = object.getString("message");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    if(error) {
+                        Toast.makeText(getApplicationContext(),message,
+                                Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(getApplicationContext(),"Sala adicionada a sua salas",
+                                Toast.LENGTH_SHORT).show();
+
+                        if(exploreFragment.getActivity()!=null){
+                            ((MainActivity)exploreFragment.getActivity()).showClassFragment();
+                        }
+                    }
+                    dialog.dismiss();
+                } else {
+                    Toast.makeText(
+                            getApplicationContext(),
+                            "Verifique a conexão com a internet e tente novamente!",
+                            Toast.LENGTH_LONG
+                    ).show();
                 }
-                Log.d("RESPONSE", "" + serverResponse);
-
-                JSONObject object = null;
-                try {
-                    object = new JSONObject(serverResponse);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                boolean error = false;
-                String message = "";
-                try {
-                    error = object.getBoolean("error");
-                    message = object.getString("message");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                if(error) {
-                    Toast.makeText(getApplicationContext(),message,
-                            Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(getApplicationContext(),"Sala adicionada a sua salas",
-                            Toast.LENGTH_SHORT).show();
-                }
-                dialog.dismiss();
-
 
             }
         });

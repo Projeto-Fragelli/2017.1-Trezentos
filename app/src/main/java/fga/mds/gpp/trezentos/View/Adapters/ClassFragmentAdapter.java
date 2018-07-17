@@ -2,6 +2,7 @@ package fga.mds.gpp.trezentos.View.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,8 +51,6 @@ public class ClassFragmentAdapter extends RecyclerView.Adapter implements View.O
         classViewHolder.owner_name.setText(userClass.getCreatorName());
         classViewHolder.date_creation.setText(userClass.getCreationDate());
     }
-
-
 
     @Override
     public long getItemId(int position) {
