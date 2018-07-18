@@ -156,6 +156,10 @@ public class UserClass implements Serializable {
         return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public void setPassword(String password, String passwordConfirm) throws UserException{
         final int MIN_PASSWORD_LENGTH = 6;
         final int MAX_PASSWORD_LENGTH = 16;

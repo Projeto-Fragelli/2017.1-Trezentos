@@ -250,6 +250,7 @@ public class UserClassControl {
             userClass.setIdClass(jsonObject.getString("idClass"));
             userClass.setIdClassCreator(jsonObject.getString("idClassCreator"));
             userClass.setClassName(jsonObject.getString("className"));
+            userClass.setPassword(jsonObject.getString("classPassword"));
             userClass.setCutOff(Float.parseFloat(jsonObject.getString("classCutOff")));
             userClass.setSizeGroups(Integer.parseInt(jsonObject.getString("classSizeOfGroup")));
             userClass.setAddition(Float.parseFloat(jsonObject.getString("classAddition")));
