@@ -53,12 +53,14 @@ public class ServerOperationExploreFragment extends AsyncTask<String, Void, Arra
                                           SwipeRefreshLayout swipeRefreshLayout,
                                           ProgressBar progressBar,
                                           RecyclerView recyclerView,
-                                          ExploreFragment exploreFragment){
+                                          ExploreFragment exploreFragment,
+                                          ClassFragmentAdapter classFragmentAdapter){
         this.isInit = isInit;
         this.swipeRefreshLayout = swipeRefreshLayout;
         this.progressBar = progressBar;
         this.exploreFragment = exploreFragment;
         this.recyclerView = recyclerView;
+        this.classFragmentAdapter = classFragmentAdapter;
 
     }
 
@@ -109,8 +111,7 @@ public class ServerOperationExploreFragment extends AsyncTask<String, Void, Arra
         }
         recyclerView.setVisibility(View.VISIBLE);
 
-        classFragmentAdapter = new ClassFragmentAdapter(result, exploreFragment.getContext());
-
+        classFragmentAdapter.setFilteredList(result);
 
         classFragmentAdapter.setOnItemClickListener(callJoinClass());
 

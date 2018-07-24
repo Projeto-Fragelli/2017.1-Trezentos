@@ -40,11 +40,8 @@ public class ServerOperationClassFragment extends AsyncTask<String, Void, ArrayL
     private LinearLayout noUserClass;
     private boolean isInit;
     private SwipeRefreshLayout swipeRefreshLayout;
-
     private String userId;
     private ClassFragment classFragment;
-    private SwipeRefreshLayout swipeLayout;
-
     private RecyclerView recyclerView;
 
     public ServerOperationClassFragment(boolean isInit,

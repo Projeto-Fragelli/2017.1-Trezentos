@@ -55,35 +55,35 @@ public class ServerOperationSearchFragment extends AsyncTask<String, Void, Strin
 
     private void initRecyclerView(){
 
-        //RecyclerView recyclerView = (RecyclerView) .findViewById(R.id.recycler_explore);
-        recyclerView.setAdapter(classFragmentAdapter);
-
-        //userClasses = getFormatedClasses(userClasses);
-
-        exploreFragment.classFragmentAdapter = new ClassFragmentAdapter(userClasses, getApplicationContext());
-        classFragmentAdapter = exploreFragment.classFragmentAdapter;
-        classFragmentAdapter.setOnItemClickListener(callJoinClass());
-
-        RecyclerView.LayoutManager layout = new LinearLayoutManager(application,
-                LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layout);
-
-        recyclerView.setAdapter(classFragmentAdapter);
-        recyclerView.setVisibility(View.VISIBLE);
-
-
-        /*
-        recyclerView.setOnScrollListener(new HidingScrollListener() {
-            @Override
-            public void onHide() {
-                exploreFragment.hideViews();
-            }
-            @Override
-            public void onShow() {
-                exploreFragment.showViews();
-            }
-        });
-        */
+//        //RecyclerView recyclerView = (RecyclerView) .findViewById(R.id.recycler_explore);
+//        recyclerView.setAdapter(classFragmentAdapter);
+//
+//        //userClasses = getFormatedClasses(userClasses);
+//
+//        exploreFragment.classFragmentAdapter = new ClassFragmentAdapter(userClasses, getApplicationContext());
+//        classFragmentAdapter = exploreFragment.classFragmentAdapter;
+//        classFragmentAdapter.setOnItemClickListener(callJoinClass());
+//
+//        RecyclerView.LayoutManager layout = new LinearLayoutManager(application,
+//                LinearLayoutManager.VERTICAL, false);
+//        recyclerView.setLayoutManager(layout);
+//
+//        recyclerView.setAdapter(classFragmentAdapter);
+//        recyclerView.setVisibility(View.VISIBLE);
+//
+//
+//        /*
+//        recyclerView.setOnScrollListener(new HidingScrollListener() {
+//            @Override
+//            public void onHide() {
+//                exploreFragment.hideViews();
+//            }
+//            @Override
+//            public void onShow() {
+//                exploreFragment.showViews();
+//            }
+//        });
+//        */
     }
 
     private ClassViewHolder.OnItemClickListener callJoinClass() {

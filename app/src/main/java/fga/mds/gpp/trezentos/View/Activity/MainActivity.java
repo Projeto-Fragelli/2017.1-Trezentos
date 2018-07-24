@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity{
 
                 } else if(toolbar.getTitle().equals("Explorar")){
                     ExploreFragment exploreFragment = ExploreFragment.getInstance();
+                    exploreFragment.filterClassList(newText);
                 }
                 return true;
             }
