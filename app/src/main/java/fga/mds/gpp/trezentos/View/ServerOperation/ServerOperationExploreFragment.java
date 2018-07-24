@@ -175,15 +175,11 @@ public class ServerOperationExploreFragment extends AsyncTask<String, Void, Arra
                     }
                     Log.d("RESPONSE", "" + serverResponse);
 
-                    JSONObject object = null;
-                    try {
-                        object = new JSONObject(serverResponse);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    JSONObject object;
                     boolean error = false;
                     String message = "";
                     try {
+                        object = new JSONObject(serverResponse);
                         error = object.getBoolean("error");
                         message = object.getString("message");
                     } catch (JSONException e) {
@@ -202,6 +198,7 @@ public class ServerOperationExploreFragment extends AsyncTask<String, Void, Arra
                         }
                     }
                     dialog.dismiss();
+
                 } else {
                     Toast.makeText(
                             getApplicationContext(),
