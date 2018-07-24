@@ -41,18 +41,24 @@ public class MainActivity extends AppCompatActivity{
         searchView.setQueryHint("Search");
         searchView.setSearchableInfo(searchManager
                 .getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(true);// Do not iconify the widget; expand it by defaul
+        searchView.setIconifiedByDefault(true);
 
         SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
             public boolean onQueryTextChange(String newText) {
+                if(toolbar.getTitle().equals("Salas")){
+                    ClassFragment classFragment = ClassFragment.getInstance();
+                    classFragment.filterClassList(newText);
 
+                } else if(toolbar.getTitle().equals("Explorar")){
+                    ExploreFragment exploreFragment = ExploreFragment.getInstance();
+                }
                 return true;
             }
 
             public boolean onQueryTextSubmit(String query) {
-
-                return true;
+                return false;
             }
+
         };
 
         searchView.setOnQueryTextListener(queryTextListener);
