@@ -145,9 +145,6 @@ public class MainActivity extends AppCompatActivity{
         setSupportActionBar(toolbar);
     }
 
-    private void goClassScreen() {
-        startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-    }
     private void goSignInScreen() {
         Intent intent = new Intent(MainActivity.this, SignInActivity.class);
 

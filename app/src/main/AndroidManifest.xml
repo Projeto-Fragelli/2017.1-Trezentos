@@ -35,7 +35,6 @@
         <activity android:name=".View.Activity.ClassActivity" />
         <activity android:name=".View.Activity.CreateClassActivity" />
         <activity android:name=".View.Activity.CreateExamActivity" />
-        <activity android:name=".View.Activity.SearchActivity" />
         <activity android:name=".View.Activity.ExamActivity" />
         <activity android:name=".View.Activity.StudentClassActivity" />
         <activity android:name=".View.Activity.StudentExamActivity" />
