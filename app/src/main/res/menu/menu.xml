@@ -7,31 +7,15 @@
     <item
         android:id="@+id/search"
         android:icon="@drawable/ic_search"
-        app:showAsAction="always"
-        android:title="" />
+        android:title=""
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/star_image"
         android:icon="@drawable/ic_star"
         app:showAsAction="always"
         android:title="" />
-
-
-    <item
-        android:id="@+id/search_classes"
-        android:title="Explore" />
-
-
-    <item android:title="Sair" />
-
-
-
-
-
-
-
-
-
 
 
 </menu>

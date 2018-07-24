@@ -1,5 +1,7 @@
 package fga.mds.gpp.trezentos.View.Activity;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -7,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,27 +27,49 @@ public class MainActivity extends AppCompatActivity{
     private BottomNavigationView bottomNavigationView;
     private Fragment selectedFragment;
     private Toolbar toolbar = null;
-    MenuItem itemSearch = null;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         // Inflate the menu; this adds items to the action bar if it is present.
-        itemSearch = findViewById(R.id.search);
         getMenuInflater().inflate(R.menu.menu, menu);
+
+        MenuItem searchViewItem = menu.findItem(R.id.search);
+
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) searchViewItem.getActionView();
+        searchView.setQueryHint("Search");
+        searchView.setSearchableInfo(searchManager
+                .getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(true);// Do not iconify the widget; expand it by defaul
+
+        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
+            public boolean onQueryTextChange(String newText) {
+
+                return true;
+            }
+
+            public boolean onQueryTextSubmit(String query) {
+
+                return true;
+            }
+        };
+
+        searchView.setOnQueryTextListener(queryTextListener);
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        int id = item.getItemId();
-        // Noinspection SimplifiableIfStatement
-        if(id == R.id.search_classes){
-            goClassScreen();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item){
+//        int id = item.getItemId();
+//        // Noinspection SimplifiableIfStatement
+//        if(id == R.id.search_classes){
+//            goClassScreen();
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
