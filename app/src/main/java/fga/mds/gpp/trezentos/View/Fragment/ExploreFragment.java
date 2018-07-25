@@ -34,13 +34,9 @@ public class ExploreFragment extends Fragment {
     private ProgressBar progressBar = null;
     private ArrayList<UserClass> userClasses = null;
     public RecyclerView recyclerView;
-    public ClassFragmentAdapter classFragmentAdapter;
     SwipeRefreshLayout swipeLayout;
     private Button buttonRefresh;
-
-    public ArrayList<UserClass> getUserClasses() {
-        return userClasses;
-    }
+    public ClassFragmentAdapter classFragmentAdapter = null;
 
     public void setUserClasses(ArrayList<UserClass> userClasses) {
         this.userClasses = userClasses;
@@ -73,6 +69,7 @@ public class ExploreFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_explore);
         swipeLayout = view.findViewById(R.id.swipeRefreshLayout);
         buttonRefresh = view.findViewById(R.id.explore_refresh);
+        classFragmentAdapter = new ClassFragmentAdapter(userClasses, getContext());
 
         callServerOperation(true);
 
@@ -120,9 +117,24 @@ public class ExploreFragment extends Fragment {
                     swipeLayout,
                     progressBar,
                     recyclerView,
-                    fragment
+                    fragment,
+                    classFragmentAdapter
             ).execute();
         }
+
+    }
+
+    public void filterClassList(String query) {
+        query = query.toLowerCase();
+
+        final ArrayList<UserClass> filteredList = new ArrayList<>();
+        for (UserClass item : userClasses) {
+            if (item.getClassName().toLowerCase().contains(query)) {
+                filteredList.add(item);
+            }
+        }
+
+        classFragmentAdapter.setFilteredList(filteredList);
 
     }
 

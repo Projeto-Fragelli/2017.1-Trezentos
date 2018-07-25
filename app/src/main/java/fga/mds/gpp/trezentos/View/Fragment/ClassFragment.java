@@ -22,6 +22,7 @@ import fga.mds.gpp.trezentos.Model.UserClass;
 import fga.mds.gpp.trezentos.Controller.UserClassControl;
 import fga.mds.gpp.trezentos.R;
 import fga.mds.gpp.trezentos.View.Activity.CreateClassActivity;
+import fga.mds.gpp.trezentos.View.Adapters.ClassFragmentAdapter;
 import fga.mds.gpp.trezentos.View.ServerOperation.ServerOperationClassFragment;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -38,6 +39,7 @@ public class ClassFragment extends Fragment {
     private RecyclerView recyclerView;
     private Button buttonRefresh;
     private LinearLayout noClassUserLayout;
+    private ClassFragmentAdapter classFragmentAdapter = null;
 
     public static ClassFragment getInstance() {
         if(fragment == null){
@@ -46,9 +48,6 @@ public class ClassFragment extends Fragment {
         return fragment;
     }
 
-    public ArrayList<UserClass> getUserClasses() {
-        return userClasses;
-    }
 
     public void setUserClasses(ArrayList<UserClass> userClasses) {
         this.userClasses = userClasses;
@@ -71,6 +70,7 @@ public class ClassFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_class);
         buttonRefresh = view.findViewById(R.id.class_refresh);
         noClassUserLayout = view.findViewById(R.id.no_user_class);
+        classFragmentAdapter = new ClassFragmentAdapter(userClasses, getContext());
 
         initFloatingActionButton(view);
         callServerOperation(true);
@@ -123,10 +123,25 @@ public class ClassFragment extends Fragment {
                     progressBar,
                     recyclerView,
                     fragment,
-                    noClassUserLayout
+                    noClassUserLayout,
+                    classFragmentAdapter
             ).execute();
 
         }
+
+    }
+
+    public void filterClassList(String query) {
+        query = query.toLowerCase();
+
+        final ArrayList<UserClass> filteredList = new ArrayList<>();
+        for (UserClass item : userClasses) {
+            if (item.getClassName().toLowerCase().contains(query)) {
+                filteredList.add(item);
+            }
+        }
+
+        classFragmentAdapter.setFilteredList(filteredList);
 
     }
 

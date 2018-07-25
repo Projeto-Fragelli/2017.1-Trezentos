@@ -14,7 +14,7 @@ import fga.mds.gpp.trezentos.R;
 import fga.mds.gpp.trezentos.View.ViewHolder.ClassViewHolder;
 
 public class ClassFragmentAdapter extends RecyclerView.Adapter implements View.OnClickListener {
-    private ArrayList<UserClass> userClasses = null;
+    private ArrayList<UserClass> userClasses;
     private Context context;
     private ClassViewHolder.OnItemClickListener listener;
 
@@ -70,5 +70,10 @@ public class ClassFragmentAdapter extends RecyclerView.Adapter implements View.O
     @Override
     public void onClick(View v) {
 
+    }
+
+    public void setFilteredList (ArrayList<UserClass> filteredList){
+        this.userClasses = filteredList;
+        notifyDataSetChanged();
     }
 }

@@ -1,5 +1,7 @@
 package fga.mds.gpp.trezentos.View.Activity;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -7,9 +9,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 import fga.mds.gpp.trezentos.Controller.UserAccountControl;
 import fga.mds.gpp.trezentos.R;
@@ -24,27 +28,59 @@ public class MainActivity extends AppCompatActivity{
     private BottomNavigationView bottomNavigationView;
     private Fragment selectedFragment;
     private Toolbar toolbar = null;
-    MenuItem itemSearch = null;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         // Inflate the menu; this adds items to the action bar if it is present.
-        itemSearch = findViewById(R.id.search);
         getMenuInflater().inflate(R.menu.menu, menu);
+
+        MenuItem searchViewItem = menu.findItem(R.id.search);
+
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) searchViewItem.getActionView();
+        searchView.setQueryHint("Pesquisar sala");
+        searchView.setSearchableInfo(searchManager
+                .getSearchableInfo(getComponentName()));
+
+        EditText searchEditText = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchEditText.setTextColor(getResources().getColor(R.color.white));
+        searchEditText.setHintTextColor(getResources().getColor(R.color.white));
+
+        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
+            public boolean onQueryTextChange(String newText) {
+                if(toolbar.getTitle().equals("Salas")){
+                    ClassFragment classFragment = ClassFragment.getInstance();
+                    classFragment.filterClassList(newText);
+
+                } else if(toolbar.getTitle().equals("Explorar")){
+                    ExploreFragment exploreFragment = ExploreFragment.getInstance();
+                    exploreFragment.filterClassList(newText);
+                }
+                return true;
+            }
+
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+        };
+
+        searchView.setOnQueryTextListener(queryTextListener);
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        int id = item.getItemId();
-        // Noinspection SimplifiableIfStatement
-        if(id == R.id.search_classes){
-            goClassScreen();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item){
+//        int id = item.getItemId();
+//        // Noinspection SimplifiableIfStatement
+//        if(id == R.id.search_classes){
+//            goClassScreen();
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -113,9 +149,6 @@ public class MainActivity extends AppCompatActivity{
         setSupportActionBar(toolbar);
     }
 
-    private void goClassScreen() {
-        startActivity(new Intent(getApplicationContext(), SearchActivity.class));
-    }
     private void goSignInScreen() {
         Intent intent = new Intent(MainActivity.this, SignInActivity.class);
 

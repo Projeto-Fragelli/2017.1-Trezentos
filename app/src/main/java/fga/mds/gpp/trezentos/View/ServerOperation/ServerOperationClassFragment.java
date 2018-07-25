@@ -40,12 +40,8 @@ public class ServerOperationClassFragment extends AsyncTask<String, Void, ArrayL
     private LinearLayout noUserClass;
     private boolean isInit;
     private SwipeRefreshLayout swipeRefreshLayout;
-
     private String userId;
-    private Application application;
     private ClassFragment classFragment;
-    private SwipeRefreshLayout swipeLayout;
-
     private RecyclerView recyclerView;
 
     public ServerOperationClassFragment(boolean isInit,
@@ -53,7 +49,8 @@ public class ServerOperationClassFragment extends AsyncTask<String, Void, ArrayL
                                         ProgressBar progressBar,
                                         RecyclerView recyclerView,
                                         ClassFragment classFragment,
-                                        LinearLayout noUserClass){
+                                        LinearLayout noUserClass,
+                                        ClassFragmentAdapter classFragmentAdapter){
 
 
         this.isInit = isInit;
@@ -62,6 +59,7 @@ public class ServerOperationClassFragment extends AsyncTask<String, Void, ArrayL
         this.classFragment = classFragment;
         this.recyclerView = recyclerView;
         this.noUserClass = noUserClass;
+        this.classFragmentAdapter = classFragmentAdapter;
 
     }
 
@@ -103,7 +101,7 @@ public class ServerOperationClassFragment extends AsyncTask<String, Void, ArrayL
         }
         recyclerView.setVisibility(View.VISIBLE);
 
-        classFragmentAdapter = new ClassFragmentAdapter(result, classFragment.getContext());
+        classFragmentAdapter.setFilteredList(result);
 
         classFragmentAdapter.setOnItemClickListener(callJoinClass());
 
