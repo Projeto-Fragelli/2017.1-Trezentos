@@ -146,8 +146,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onSuccess(LoginResult loginResult){
                 facebookLogin(loginResult);
-                userAccountControl.changeUserToLogged();
-                goToMain();
             }
 
             @Override
@@ -189,10 +187,25 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response){
                         JSONObject jsonObject = response.getJSONObject();
-                        UserAccountControl userAccountControl = UserAccountControl
-                                .getInstance(getApplicationContext());
-                        userAccountControl.authenticateSignInFb(object);
-                        userAccountControl.signInUserFromFacebook(jsonObject);
+                        userAccountControl = UserAccountControl.getInstance(getApplicationContext());
+                        userAccountControl.signInUserFromFacebook(object);
+                        try {
+                            userAccountControl.authenticateSignInFb(jsonObject);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        userAccountControl.validateFacebookAccount();
+//                        try {
+//                            userAccountControl.createPersonFb(serverResponse);
+//                        } catch (UserException e) {
+//                            e.printStackTrace();
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+                        userAccountControl.validateFacebookLogin();
+                        userAccountControl.logInUserFb();
+                        goToMain();
                     }
                 });
         Bundle parameters = new Bundle();

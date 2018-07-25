@@ -35,7 +35,6 @@ public class UserAccountControl {
     private static UserAccountControl instance;
     final Context context;
     private UserAccount userAccount;
-    private UserAccount fbUserAccount;
     private SharedPreferences session;
 
 
@@ -120,7 +119,7 @@ public class UserAccountControl {
     }
 
     public String validateSignInResponse(){
-        RequestHandler requestHandler = new RequestHandler(URLs.URL_LOGIN, getSignInParams(false));
+        RequestHandler requestHandler = new RequestHandler(URLs.URL_LOGIN, getSignInParams());
         String serverResponse = "404";
 
         try{
@@ -134,7 +133,7 @@ public class UserAccountControl {
         return serverResponse;
     }
 
-    private HashMap<String, String>  getSignInParams(Boolean isFromFacebook) {
+    private HashMap<String, String>  getSignInParams() {
 
         HashMap<String, String> params = new HashMap<>();
         params.put("PersonEmail", userAccount.getEmail());
@@ -165,23 +164,9 @@ public class UserAccountControl {
 
 
     //Sign-in Facebook
-    public void authenticateSignInFb(JSONObject object){
-        try{
-            String fFirstName = object.getString("PersonFirstName");
-            String fLastName = object.getString("PersonLastName");
-            String fEmail = object.getString("PersonEmail");
-            UserAccount fbUserAccount = new UserAccount();
-            fbUserAccount.setEmail(fEmail);
-            fbUserAccount.setFirstName(fFirstName);
-            fbUserAccount.setLastName(fLastName);
-
-        }catch(JSONException | UserException e){
-            e.printStackTrace();
-        }
-    }
 
     public void signInUserFromFacebook(JSONObject object){
-        session = PreferenceManager.getDefaultSharedPreferences(context);
+        userAccount = new UserAccount();
         String fName = null, email = null, lName = null;
 
         try {
@@ -189,24 +174,86 @@ public class UserAccountControl {
             lName = object.getString("last_name");
             email = object.getString("email");
 
+            userAccount = new UserAccount();
+            userAccount.setEmail(email);
+            userAccount.setFirstName(fName);
+            userAccount.setLastName(lName);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void authenticateSignInFb(JSONObject object) throws JSONException {
+        object.put("PersonFirstName", userAccount.getFisrtName());
+        object.put("PersonLastName", userAccount.getLastName());
+        object.put("PersonEmail", userAccount.getEmail());
+        object.put("idPerson", userAccount.getId());
+        object.put("person", object);
+    }
+
+    public String validateFacebookAccount(){
+
+        RequestHandler requestHandler = new RequestHandler(URLs.URL_REGISTER, getSignUpParams( true));
+
+        String serverResponse = "404";
+
+        try{
+            serverResponse = requestHandler.execute().get();
+        }catch(InterruptedException e){
+            e.printStackTrace();
+        }catch(ExecutionException e){
+            e.printStackTrace();
+        }
+        Log.d("RESPONSE", serverResponse);
+        return serverResponse;
+    }
+
+    public String validateFacebookLogin(){
+
+        RequestHandler requestHandler = new RequestHandler(URLs.URL_REGISTER, getSignInParams());
+
+        String serverResponse = "404";
+
+        try{
+            serverResponse = requestHandler.execute().get();
+        }catch(InterruptedException e){
+            e.printStackTrace();
+        }catch(ExecutionException e){
+            e.printStackTrace();
+        }
+        Log.d("RESPONSE", serverResponse);
+        return serverResponse;
+    }
+
+    public void createPersonFb(String serverResponse) throws UserException, JSONException {
+        JSONObject object = getObjectFromServerResponse(serverResponse);
+        JSONObject userJson = object.getJSONObject("person");
+        Log.d(TAG, "passou por aqui");
+
+        try {
+            Log.d(TAG, "passou por aqui");
+            userAccount.setId(userJson.getString("idPerson"));
+            userAccount.setIsFromFacebook(userJson.getBoolean("true"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        session.edit()
-                .putBoolean("IsUserLogged", true)
-                .putString("userEmail", email)
-                .putString("userFirstName", fName)
-                .putString("userLastName", lName)
-                .apply();
-
     }
 
-    public void changeUserToLogged(){
-        session = PreferenceManager.getDefaultSharedPreferences(context);
+    public void logInUserFb(){
+        SharedPreferences session = PreferenceManager.getDefaultSharedPreferences(context);
+
         session.edit()
                 .putBoolean("IsUserLogged", true)
+                .putString("userEmail", userAccount.getEmail())
+                .putString("userFirstName", userAccount.getFisrtName())
+                .putString("userLastName", userAccount.getLastName())
                 .apply();
     }
+
     //End Sign-in Facebook
 
 
@@ -305,13 +352,13 @@ public class UserAccountControl {
     }
 
     public boolean isLoggedUser() {
-        SharedPreferences session = PreferenceManager.getDefaultSharedPreferences(context);
-
-        if (session.getString("userId", "").equals("")) {
-            return false;
-        } else {
+//        SharedPreferences session = PreferenceManager.getDefaultSharedPreferences(context);
+//
+//        if (session.getString("userId", "").equals("")) {
+//            return false;
+//        } else {
             return session.getBoolean("IsUserLogged", false);
-        }
+//        }
 
     }
     //End Common
