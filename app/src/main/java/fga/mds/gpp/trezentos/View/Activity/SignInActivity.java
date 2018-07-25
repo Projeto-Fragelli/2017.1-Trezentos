@@ -189,21 +189,18 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                         JSONObject jsonObject = response.getJSONObject();
                         userAccountControl = UserAccountControl.getInstance(getApplicationContext());
                         userAccountControl.signInUserFromFacebook(object);
+                        userAccountControl.validateFacebookAccount();
+
+                        String serverResponse = userAccountControl.validateFacebookLogin();
+
                         try {
-                            userAccountControl.authenticateSignInFb(jsonObject);
+                            userAccountControl.createPerson(serverResponse);
+                        } catch (UserException e) {
+                            e.printStackTrace();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
-                        userAccountControl.validateFacebookAccount();
-//                        try {
-//                            userAccountControl.createPersonFb(serverResponse);
-//                        } catch (UserException e) {
-//                            e.printStackTrace();
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-                        userAccountControl.validateFacebookLogin();
                         userAccountControl.logInUserFb();
                         goToMain();
                     }

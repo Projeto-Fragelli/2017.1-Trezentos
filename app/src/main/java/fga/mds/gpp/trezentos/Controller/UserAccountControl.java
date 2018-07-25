@@ -88,19 +88,28 @@ public class UserAccountControl {
     }
 
     private HashMap<String, String>  getSignUpParams(Boolean isFromFacebook) {
-
         HashMap<String, String> params = new HashMap<>();
-        params.put("PersonFirstName", userAccount.getFisrtName());
-        params.put("PersonLastName", userAccount.getLastName());
-        params.put("PersonEmail", userAccount.getEmail());
-        params.put("PersonPassword", userAccount.getPassword());
-        params.put("PersonIsFromFacebook", isFromFacebook.toString());
-        params.put("PersonTelephoneDDI", userAccount.getTelephoneDDI());
-        params.put("PersonTelephoneDDD", userAccount.getTelephoneDDD());
-        params.put("PersonTelephoneNumber", userAccount.getTelephoneNumber());
+        if (isFromFacebook){
+            params.put("PersonFirstName", userAccount.getFisrtName());
+            params.put("PersonLastName", userAccount.getLastName());
+            params.put("PersonEmail", userAccount.getEmail());
+            params.put("PersonIsFromFacebook", String.valueOf(isFromFacebook));
+            params.put("PersonPassword", "null");
+            params.put("PersonTelephoneDDI", "null");
+            params.put("PersonTelephoneDDD", "null");
+            params.put("PersonTelephoneNumber", "null");
 
+        } else {
+            params.put("PersonFirstName", userAccount.getFisrtName());
+            params.put("PersonLastName", userAccount.getLastName());
+            params.put("PersonEmail", userAccount.getEmail());
+            params.put("PersonPassword", userAccount.getPassword());
+            params.put("PersonIsFromFacebook", isFromFacebook.toString());
+            params.put("PersonTelephoneDDI", userAccount.getTelephoneDDI());
+            params.put("PersonTelephoneDDD", userAccount.getTelephoneDDD());
+            params.put("PersonTelephoneNumber", userAccount.getTelephoneNumber());
+        }
         return params;
-
     }
     //End Sign-up
 
@@ -119,7 +128,7 @@ public class UserAccountControl {
     }
 
     public String validateSignInResponse(){
-        RequestHandler requestHandler = new RequestHandler(URLs.URL_LOGIN, getSignInParams());
+        RequestHandler requestHandler = new RequestHandler(URLs.URL_LOGIN, getSignInParams(false));
         String serverResponse = "404";
 
         try{
@@ -133,38 +142,39 @@ public class UserAccountControl {
         return serverResponse;
     }
 
-    private HashMap<String, String>  getSignInParams() {
-
+    private HashMap<String, String>  getSignInParams(Boolean isFromFacebook) {
         HashMap<String, String> params = new HashMap<>();
-        params.put("PersonEmail", userAccount.getEmail());
-        params.put("PersonPassword", userAccount.getPassword());
+        if (isFromFacebook){
+            params.put("PersonEmail", userAccount.getEmail());
+            params.put("PersonPassword", "null");
+        } else {
+            params.put("PersonEmail", userAccount.getEmail());
+            params.put("PersonPassword", userAccount.getPassword());
+        }
+
 
         return params;
 
     }
 
-    public void createPerson(String serverResponse) throws UserException, JSONException {
+    public void createPerson(String serverResponse) throws UserException, JSONException, NullPointerException {
         JSONObject object = getObjectFromServerResponse(serverResponse);
         JSONObject userJson = object.getJSONObject("person");
 
-        try {
-            userAccount.setId(userJson.getString("idPerson"));
-            userAccount.setFirstName(userJson.getString("PersonFirstName"));
-            userAccount.setLastName(userJson.getString("PersonLastName"));
-            userAccount.setEmail(userJson.getString("PersonEmail"));
-            userAccount.setTelephoneDDI(userJson.getString("PersonTelephoneDDI"));
-            userAccount.setTelephoneDDD(userJson.getString("PersonTelephoneDDD"));
-            userAccount.setTelephoneNumber(userJson.getString("PersonTelephoneNumber"));
-            userAccount.setIsFromFacebook(userJson.getBoolean("PersonIsFromFacebook"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        userAccount.setId(String.valueOf(userJson.getInt("idPerson")));
+        userAccount.setFirstName(userJson.getString("PersonFirstName"));
+        userAccount.setLastName(userJson.getString("PersonLastName"));
+        userAccount.setEmail(userJson.getString("PersonEmail"));
+        userAccount.setTelephoneDDI(userJson.getString("PersonTelephoneDDI"));
+        userAccount.setTelephoneDDD(userJson.getString("PersonTelephoneDDD"));
+        userAccount.setTelephoneNumber(userJson.getString("PersonTelephoneNumber"));
+        userAccount.setIsFromFacebook(userJson.getBoolean("PersonIsFromFacebook"));
+
     }
     //End Sign-in
 
 
     //Sign-in Facebook
-
     public void signInUserFromFacebook(JSONObject object){
         userAccount = new UserAccount();
         String fName = null, email = null, lName = null;
@@ -187,14 +197,6 @@ public class UserAccountControl {
 
     }
 
-    public void authenticateSignInFb(JSONObject object) throws JSONException {
-        object.put("PersonFirstName", userAccount.getFisrtName());
-        object.put("PersonLastName", userAccount.getLastName());
-        object.put("PersonEmail", userAccount.getEmail());
-        object.put("idPerson", userAccount.getId());
-        object.put("person", object);
-    }
-
     public String validateFacebookAccount(){
 
         RequestHandler requestHandler = new RequestHandler(URLs.URL_REGISTER, getSignUpParams( true));
@@ -214,7 +216,7 @@ public class UserAccountControl {
 
     public String validateFacebookLogin(){
 
-        RequestHandler requestHandler = new RequestHandler(URLs.URL_REGISTER, getSignInParams());
+        RequestHandler requestHandler = new RequestHandler(URLs.URL_LOGIN, getSignInParams(true));
 
         String serverResponse = "404";
 
@@ -227,20 +229,6 @@ public class UserAccountControl {
         }
         Log.d("RESPONSE", serverResponse);
         return serverResponse;
-    }
-
-    public void createPersonFb(String serverResponse) throws UserException, JSONException {
-        JSONObject object = getObjectFromServerResponse(serverResponse);
-        JSONObject userJson = object.getJSONObject("person");
-        Log.d(TAG, "passou por aqui");
-
-        try {
-            Log.d(TAG, "passou por aqui");
-            userAccount.setId(userJson.getString("idPerson"));
-            userAccount.setIsFromFacebook(userJson.getBoolean("true"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     public void logInUserFb(){
