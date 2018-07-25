@@ -323,4 +323,28 @@ public class UserAccountControl {
 
         return netInfo != null && netInfo.isConnected();
     }
+
+    public String deleteUser(String userID){
+        HashMap<String, String> params = new HashMap<>();
+
+        Log.d("DELETE USER", userID);
+
+        params.put("PersonID", userID);
+
+        RequestHandler requestHandler = new RequestHandler(URLs.URL_DELETE_USER, params);
+
+        String serverResponse = "404";
+
+        try{
+            serverResponse = requestHandler.execute().get();
+        }catch(InterruptedException e){
+            e.printStackTrace();
+        }catch(ExecutionException e){
+            e.printStackTrace();
+        }
+
+        Log.d("RESPONSE", ""+serverResponse);
+
+        return serverResponse;
+    }
 }

@@ -9,6 +9,7 @@ public class URLs {
     public static final String URL_REGISTER = ROOT_URL + "user/sign_up.php";
     public static final String URL_LOGIN = ROOT_URL + "user/login.php";
     public static final String URL_RESET_PASSWORD = ROOT_URL + "user/reset_password.php";
+    public static final String URL_DELETE_USER = ROOT_URL + "user/delete_user.php";
 
     public static final String  URL_CLASS_FROM_PERSON = ROOT_URL + "class/class_from_person.php"; //GET
     public static final String  URL_CLASS_WITHOUT_PERSON = ROOT_URL + "class/class_without_person.php"; //GET
