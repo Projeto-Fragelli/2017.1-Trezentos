@@ -33,7 +33,6 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class ServerOperationClassFragment extends AsyncTask<String, Void, ArrayList<UserClass>> {
 
-    public ArrayList<UserClass> userClasses = null;
     private ClassFragmentAdapter classFragmentAdapter;
     public ProgressBar progressBar;
     public UserClassControl userClassControl;
@@ -92,7 +91,6 @@ public class ServerOperationClassFragment extends AsyncTask<String, Void, ArrayL
     @Override
     protected void onPostExecute(ArrayList<UserClass> result) {
         classFragment.setUserClasses(result);
-        userClasses = result;
 
         if(isInit){
             progressBar.setVisibility(View.GONE);
@@ -125,7 +123,7 @@ public class ServerOperationClassFragment extends AsyncTask<String, Void, ArrayL
         return new ClassViewHolder.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
-                UserClass userClass = userClasses.get(position);
+                UserClass userClass = classFragment.getUserClasses().get(position);
                 showJoinClassFragment(userClass);
             }
         };
@@ -148,18 +146,6 @@ public class ServerOperationClassFragment extends AsyncTask<String, Void, ArrayL
             getApplicationContext().startActivity(goClass);
         }
 
-    }
-
-    private ArrayList<UserClass> getFormatedClasses(ArrayList<UserClass> userClasses){
-        ArrayList<UserClass> tempList = new ArrayList<UserClass>();
-//        for (UserClass userClass : userClasses) {
-//            if (userClass.getOwnerEmail().equals(email) ||
-//                    userClass.getStudents().contains(email)) {
-//                tempList.add(userClass);
-//                Log.d("PUT", userClass.getClassName());
-//            }
-//        }
-        return tempList;
     }
 
 

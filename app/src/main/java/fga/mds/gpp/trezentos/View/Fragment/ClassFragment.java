@@ -53,6 +53,10 @@ public class ClassFragment extends Fragment {
         this.userClasses = userClasses;
     }
 
+    public ArrayList<UserClass> getUserClasses() {
+        return userClasses;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -141,6 +145,7 @@ public class ClassFragment extends Fragment {
             }
         }
 
+        userClasses = filteredList;
         classFragmentAdapter.setFilteredList(filteredList);
 
     }

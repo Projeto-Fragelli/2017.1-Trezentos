@@ -42,6 +42,10 @@ public class ExploreFragment extends Fragment {
         this.userClasses = userClasses;
     }
 
+    public ArrayList<UserClass> getUserClasses() {
+        return userClasses;
+    }
+
     public static ExploreFragment getInstance() {
         if(fragment == null){
             fragment = new ExploreFragment();
@@ -134,6 +138,7 @@ public class ExploreFragment extends Fragment {
             }
         }
 
+        userClasses = filteredList;
         classFragmentAdapter.setFilteredList(filteredList);
 
     }
