@@ -23,6 +23,8 @@ public class URLs {
     public static final String  URL_CREATE_EXAM = ROOT_URL + "exam/create_exam.php"; //POST
     public static final String  URL_GET_EXAMS_FROM_USER = ROOT_URL + "exam/show_exam.php"; //POST
 
+    public static final String  URL_CREATE_USER_GRADES = ROOT_URL + "grades/set_grades.php";
+
 
 
 }

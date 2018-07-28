@@ -1,43 +1,40 @@
 package fga.mds.gpp.trezentos.View.Activity;
 
 import android.app.FragmentTransaction;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
+import android.content.SearchRecentSuggestionsProvider;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
+import java.util.ArrayList;
 
-import fga.mds.gpp.trezentos.Controller.EvaluationControl;
 import fga.mds.gpp.trezentos.Controller.UserExamControl;
-import fga.mds.gpp.trezentos.Exception.UserClassException;
-import fga.mds.gpp.trezentos.Exception.UserException;
 import fga.mds.gpp.trezentos.Model.Exam;
+import fga.mds.gpp.trezentos.Model.Student;
 import fga.mds.gpp.trezentos.Model.UserClass;
 import fga.mds.gpp.trezentos.R;
 import fga.mds.gpp.trezentos.View.Fragment.AreYouSureFragment;
 import fga.mds.gpp.trezentos.View.Fragment.GroupsFragment;
+import fga.mds.gpp.trezentos.View.Fragment.InfoClassFragment;
 import fga.mds.gpp.trezentos.View.Fragment.StudentsFragment;
 import fga.mds.gpp.trezentos.View.Adapters.ViewPagerAdapter;
 
 public class ExamActivity extends AppCompatActivity {
 
     private UserClass userClass;
-    private ViewPager viewPager;
     private Toolbar toolbar;
     private Exam exam;
+    private StudentsFragment studentsFragment;
+    private GroupsFragment groupsFragment;
+    private ArrayList<Student> students;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -45,7 +42,6 @@ public class ExamActivity extends AppCompatActivity {
         setContentView(R.layout.activity_exam);
         initToolbar();
         initViewPager();
-        initTabLayout();
         initRecover();
 
         if(exam != null){
@@ -54,20 +50,27 @@ public class ExamActivity extends AppCompatActivity {
     }
 
     public void initToolbar(){
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     public void initViewPager(){
-        viewPager = (ViewPager) findViewById(R.id.view_pager);
-        setupViewPager(viewPager);
-    }
+        studentsFragment = new StudentsFragment();
+        groupsFragment = new GroupsFragment();
 
-    public void initTabLayout(){
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(viewPager);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        adapter.addFragment(studentsFragment, "ESTUDANTES");
+        adapter.addFragment(groupsFragment, "GRUPOS");
+
+        ViewPager activity = findViewById(R.id.view_pager);
+        activity.setAdapter(adapter);
+
+        TabLayout tabLayout =  findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(activity);
+
     }
 
 
@@ -78,12 +81,6 @@ public class ExamActivity extends AppCompatActivity {
         userClass = (UserClass) extras.getSerializable("Class");
     }
 
-    private void setupViewPager(ViewPager viewPager){
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new StudentsFragment(), "ESTUDANTES");
-        adapter.addFragment(new GroupsFragment(), "GRUPOS");
-        viewPager.setAdapter(adapter);
-    }
 
     @Override
     public boolean onSupportNavigateUp(){
@@ -99,59 +96,52 @@ public class ExamActivity extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        UserExamControl userExamControl = UserExamControl.getInstance(getApplicationContext());
+
         switch (item.getItemId()){
             case R.id.action_update_grades:{
-                UserExamControl userExamControl = UserExamControl.getInstance(getApplicationContext());
+                students = studentsFragment.getStudents();
 
-                recoverLastIntent();
-//                try {
-//                    userExamControl.validateAddsGrades(userClass, exam, "first_grades");
-//                }catch(UserClassException | ExecutionException | InterruptedException e){
-//
-//                    e.printStackTrace();
-//                }
+                ArrayList<String> firstGrades = userExamControl.getGradesFromStudents(students, 1);
+                for (String s: firstGrades){
+                    Log.d("NOTAS 1", s);
+                }
+
+                //TODO COLOCAR AS NOTAS NO FORMATO DESEJADO PRA ENVIAR- ARRAY LIST DE STRING PROVISÓRIO
+                //TODO VALIDAR RESPOSTA DA API
+                //exam.setFirstGrades(firstGrades);
+                //response = userExamControl.createGrades(1);
+                //validateServerResponse(response);
 
                 break;
             }
 
             case R.id.action_update_trezentos_grades: {
-                UserExamControl userExamControl = UserExamControl.getInstance(getApplicationContext());
+                students = studentsFragment.getStudents();
 
-                recoverLastIntent();
-//                try {
-//                    userExamControl.validateAddsGrades(userClass, exam, "second_grades");
-//                }catch(InterruptedException | ExecutionException | UserClassException e){
-//                    e.printStackTrace();
-//                }
+                ArrayList<String> firstGrades = userExamControl.getGradesFromStudents(students, 2);
+                for (String s: firstGrades){
+                    Log.d("NOTAS 2", s);
+                }
+
+                //TODO COLOCAR AS NOTAS NO FORMATO DESEJADO PRA ENVIAR - ARRAY LIST DE STRING PROVISÓRIO
+                //TODO VALIDAR RESPOSTA DA API
+                //exam.setSecondGrades(firstGrades);
+                //response = userExamControl.createGrades(2);
+                //validateServerResponse(response);
 
                 break;
             }
 
             case R.id.action_sort_groups:{
-                Bundle bundle = new Bundle();
-                bundle = buildBundleToSortGroups(bundle);
-                initFragmentTransation(bundle);
+//                Bundle bundle = new Bundle();
+//                bundle = buildBundleToSortGroups(bundle);
+//                initFragmentTransation(bundle);
                 break;
             }
 
             case R.id.action_send_evaluation: {
-                EvaluationControl evaluationControl =
-                        EvaluationControl.getInstance(getApplication());
-
-//                HashMap<String, Integer> groups;
-//                groups = GroupController.getGroups(exam.getNameExam(),
-//                        userClass.getClassName(), userClass.getOwnerEmail());
-//
-//                HashMap<String, Double> grades;
-//                grades = GroupController.getFirstGrades(exam.getNameExam(),
-//                        userClass.getClassName(), userClass.getOwnerEmail());
-
-//                try {
-//                    addEvaluationToUser(grades, groups, evaluationControl);
-//                } catch (UserException e) {
-//                    e.printStackTrace();
-//                }
-                sendEvaluationNotification();
 
                 break;
             }
@@ -161,61 +151,21 @@ public class ExamActivity extends AppCompatActivity {
 
     }
 
-    private void sendEvaluationNotification(){
-        NotificationCompat.Builder mBuilder =
-                (NotificationCompat.Builder) new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.trezentos_icon)
-                        .setContentTitle("Avaliação")
-                        .setContentText("Você tem avaliações à serem feitas!")
-                        .setLargeIcon(BitmapFactory.decodeResource(getResources()
-                                , R.drawable.trezentos_icon));
 
-        Intent resultIntent = new Intent(this, MainActivity.class);
+//    private void initFragmentTransation(Bundle bundle){
+//        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+//        AreYouSureFragment areYouSureFragment = new AreYouSureFragment();
+//        areYouSureFragment.setArguments(bundle);
+//        areYouSureFragment.show(fragmentTransaction, "areYouSure");
+//    }
+//
+//    private Bundle buildBundleToSortGroups(Bundle bundle){
+//        bundle.putSerializable("firstGrades", StudentsFragment.getHashEmailAndGrade());
+//        bundle.putSerializable("userClass", userClass);
+//        bundle.putSerializable("exam", exam);
+//
+//        return bundle;
+//    }
 
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(MainActivity.class);
-        stackBuilder.addNextIntent(resultIntent);
-
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        mBuilder.setContentIntent(resultPendingIntent);
-
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(0, mBuilder.build());
-    }
-
-    // Update exam with grades set in NumberPicker
-    private void recoverLastIntent(){
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        exam = (Exam) extras.getSerializable("Exam");
-    }
-
-    private void initFragmentTransation(Bundle bundle){
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        AreYouSureFragment areYouSureFragment = new AreYouSureFragment();
-        areYouSureFragment.setArguments(bundle);
-        areYouSureFragment.show(fragmentTransaction, "areYouSure");
-    }
-
-    private Bundle buildBundleToSortGroups(Bundle bundle){
-        bundle.putSerializable("firstGrades", StudentsFragment.getHashEmailAndGrade());
-        bundle.putSerializable("userClass", userClass);
-        bundle.putSerializable("exam", exam);
-
-        return bundle;
-    }
-
-    private void addEvaluationToUser(HashMap<String, Double> grades,
-                                     HashMap<String, Integer> groups,
-                                     EvaluationControl evaluationControl) throws UserException{
-        for(Map.Entry <String, Integer> entry : groups.entrySet()) {
-            evaluationControl.sendEvaluation(exam.getNameExam(),
-                    entry.getKey(), userClass.getClassName(),
-                    groups, grades, (double) userClass.getCutOff());
-        }
-    }
 
 }
