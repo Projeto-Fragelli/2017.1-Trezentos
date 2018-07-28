@@ -228,6 +228,7 @@ public class UserAccountControl {
             e.printStackTrace();
         }
         Log.d("RESPONSE", serverResponse);
+
         return serverResponse;
     }
 
@@ -236,6 +237,7 @@ public class UserAccountControl {
 
         session.edit()
                 .putBoolean("IsUserLogged", true)
+                .putString("userId", userAccount.getId())
                 .putString("userEmail", userAccount.getEmail())
                 .putString("userFirstName", userAccount.getFisrtName())
                 .putString("userLastName", userAccount.getLastName())
@@ -340,13 +342,13 @@ public class UserAccountControl {
     }
 
     public boolean isLoggedUser() {
-//        SharedPreferences session = PreferenceManager.getDefaultSharedPreferences(context);
-//
-//        if (session.getString("userId", "").equals("")) {
-//            return false;
-//        } else {
+        SharedPreferences session = PreferenceManager.getDefaultSharedPreferences(context);
+
+        if (session.getString("userId", "").equals("")) {
+            return false;
+        } else {
             return session.getBoolean("IsUserLogged", false);
-//        }
+        }
 
     }
     //End Common

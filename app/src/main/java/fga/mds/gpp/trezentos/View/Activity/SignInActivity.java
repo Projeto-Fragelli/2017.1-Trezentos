@@ -200,7 +200,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                         userAccountControl.logInUserFb();
                         goToMain();
                     }
