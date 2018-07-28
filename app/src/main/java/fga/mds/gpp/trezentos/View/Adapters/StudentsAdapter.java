@@ -41,6 +41,10 @@ public class StudentsAdapter extends RecyclerView.Adapter implements View.OnClic
         this.context = context;
     }
 
+    public ArrayList<Student> getStudents() {
+        return students;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
