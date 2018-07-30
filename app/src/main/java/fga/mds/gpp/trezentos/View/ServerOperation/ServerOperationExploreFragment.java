@@ -39,8 +39,6 @@ public class ServerOperationExploreFragment extends AsyncTask<String, Void, Arra
 
 
     public UserClassControl userClassControl;
-    public ArrayList<UserClass> userClasses;
-
     private boolean isInit;
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -96,10 +94,9 @@ public class ServerOperationExploreFragment extends AsyncTask<String, Void, Arra
     protected void onPostExecute(ArrayList<UserClass> result) {
 
         exploreFragment.setUserClasses(result);
-        userClasses = result;
 
-        if (userClasses != null){
-            for(UserClass u: userClasses){
+        if (result != null){
+            for(UserClass u: result){
                 Log.d("TESTESTES", u.getClassName());
             }
         }
@@ -128,7 +125,7 @@ public class ServerOperationExploreFragment extends AsyncTask<String, Void, Arra
         return new ClassViewHolder.OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
-                UserClass userClass = userClasses.get(position);
+                UserClass userClass = exploreFragment.getUserClasses().get(position);
                 showJoinClassFragment(userClass);
             }
         };
@@ -196,8 +193,9 @@ public class ServerOperationExploreFragment extends AsyncTask<String, Void, Arra
                         if(exploreFragment.getActivity()!=null){
                             ((MainActivity)exploreFragment.getActivity()).showClassFragment();
                         }
+                        dialog.dismiss();
                     }
-                    dialog.dismiss();
+
 
                 } else {
                     Toast.makeText(
