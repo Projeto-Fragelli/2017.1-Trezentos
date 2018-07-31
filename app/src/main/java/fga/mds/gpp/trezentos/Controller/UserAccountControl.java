@@ -104,7 +104,7 @@ public class UserAccountControl {
             params.put("PersonLastName", userAccount.getLastName());
             params.put("PersonEmail", userAccount.getEmail());
             params.put("PersonPassword", userAccount.getPassword());
-            params.put("PersonIsFromFacebook", isFromFacebook.toString());
+            params.put("PersonIsFromFacebook", String.valueOf(isFromFacebook));
             params.put("PersonTelephoneDDI", userAccount.getTelephoneDDI());
             params.put("PersonTelephoneDDD", userAccount.getTelephoneDDD());
             params.put("PersonTelephoneNumber", userAccount.getTelephoneNumber());
@@ -168,8 +168,7 @@ public class UserAccountControl {
         userAccount.setTelephoneDDI(userJson.getString("PersonTelephoneDDI"));
         userAccount.setTelephoneDDD(userJson.getString("PersonTelephoneDDD"));
         userAccount.setTelephoneNumber(userJson.getString("PersonTelephoneNumber"));
-        userAccount.setIsFromFacebook(userJson.getBoolean("PersonIsFromFacebook"));
-
+        userAccount.setIsFromFacebook(false);
     }
     //End Sign-in
 
@@ -188,7 +187,6 @@ public class UserAccountControl {
             userAccount.setEmail(email);
             userAccount.setFirstName(fName);
             userAccount.setLastName(lName);
-
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (UserException e) {
@@ -232,8 +230,14 @@ public class UserAccountControl {
         return serverResponse;
     }
 
-    public void logInUserFb(){
+    public void logInUserFb() throws UserException {
         SharedPreferences session = PreferenceManager.getDefaultSharedPreferences(context);
+
+        try {
+            userAccount.setIsFromFacebook(true);
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
 
         session.edit()
                 .putBoolean("IsUserLogged", true)
