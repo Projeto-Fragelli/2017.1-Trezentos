@@ -15,6 +15,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import fga.mds.gpp.trezentos.Controller.UserExamControl;
 import fga.mds.gpp.trezentos.Model.Exam;
@@ -87,7 +90,6 @@ public class ExamActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
-
     // Inflate the menu; this adds items to the action bar if it is present.
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -103,16 +105,9 @@ public class ExamActivity extends AppCompatActivity {
             case R.id.action_update_grades:{
                 students = studentsFragment.getStudents();
 
-                ArrayList<String> firstGrades = userExamControl.getGradesFromStudents(students, 1);
-                for (String s: firstGrades){
-                    Log.d("NOTAS 1", s);
-                }
+                HashMap<String, String> firstGrades = userExamControl.getGradesFromStudents(students, 1);
 
-                //TODO COLOCAR AS NOTAS NO FORMATO DESEJADO PRA ENVIAR- ARRAY LIST DE STRING PROVISÓRIO
-                //TODO VALIDAR RESPOSTA DA API
-                //exam.setFirstGrades(firstGrades);
-                //response = userExamControl.createGrades(1);
-                //validateServerResponse(response);
+                userExamControl.createGrades(1, firstGrades, exam, userClass);
 
                 break;
             }
@@ -120,10 +115,9 @@ public class ExamActivity extends AppCompatActivity {
             case R.id.action_update_trezentos_grades: {
                 students = studentsFragment.getStudents();
 
-                ArrayList<String> firstGrades = userExamControl.getGradesFromStudents(students, 2);
-                for (String s: firstGrades){
-                    Log.d("NOTAS 2", s);
-                }
+                HashMap<String,String> secondGrades = userExamControl.getGradesFromStudents(students, 2);
+
+                userExamControl.createGrades(2, secondGrades, exam, userClass);
 
                 //TODO COLOCAR AS NOTAS NO FORMATO DESEJADO PRA ENVIAR - ARRAY LIST DE STRING PROVISÓRIO
                 //TODO VALIDAR RESPOSTA DA API

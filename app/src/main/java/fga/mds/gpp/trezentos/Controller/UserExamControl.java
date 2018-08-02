@@ -8,12 +8,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import fga.mds.gpp.trezentos.DAO.RequestHandler;
 import fga.mds.gpp.trezentos.DAO.URLs;
 import fga.mds.gpp.trezentos.Exception.UserException;
 import fga.mds.gpp.trezentos.Model.Exam;
 import fga.mds.gpp.trezentos.Model.Student;
+import fga.mds.gpp.trezentos.Model.UserClass;
 
 
 public class UserExamControl{
@@ -136,18 +139,19 @@ public class UserExamControl{
         return exam;
     }
 
-    public ArrayList<String> getGradesFromStudents(ArrayList<Student> students, int gradeType){
-        ArrayList<String> grades = new ArrayList<>();
+    public HashMap<String, String> getGradesFromStudents(ArrayList<Student> students, int gradeType){
+        HashMap<String, String> grades = new HashMap<>();
+
 
 
         if (gradeType == 1){
             for (Student s1: students){
-                grades.add(String.valueOf(s1.getFirstGrade()));
+                grades.put(s1.getId(), String.valueOf(s1.getFirstGrade()));
             }
 
-        } else if (gradeType == 2){
-            for (Student s2: students){
-                grades.add(String.valueOf(s2.getSecondGrade()));
+        } else if (gradeType == 2) {
+            for (Student s2 : students) {
+                grades.put(s2.getId(), String.valueOf(s2.getSecondGrade()));
             }
 
         }
@@ -156,8 +160,8 @@ public class UserExamControl{
 
     }
 
-    public String createGrades(int gradeType) {
-        RequestHandler requestHandler = new RequestHandler(URLs.URL_CREATE_USER_GRADES, getCreateGradeParams(gradeType));
+    public String createGrades(int gradeType, HashMap<String, String> students, Exam exam, UserClass userClass) {
+        RequestHandler requestHandler = new RequestHandler(URLs.URL_CREATE_USER_GRADES, getCreateGradeParams(gradeType, students, exam, userClass));
 
         String serverResponse = "404";
 
@@ -173,28 +177,25 @@ public class UserExamControl{
 
     }
 
-
-
-    private HashMap<String, String> getCreateGradeParams(int gradeType) {
-
-        //TODO CORRIGIR PARA ENVIAR NOTAS
+    private HashMap<String, String> getCreateGradeParams(int gradeType, HashMap<String, String> students, Exam exam, UserClass userClass) {
 
         HashMap<String, String> params = new HashMap<>();
+        Integer count = 0;
 
+        Iterator it = students.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            params.put("personAndGrade[" + count.toString() + "][id]", pair.getKey().toString());
+            params.put("personAndGrade[" + count.toString() + "][grade]", pair.getValue().toString());
+            count++;
+        }
 
-        params.put("personAndGrade[0][id]", "");
-        params.put("personAndGrade[0][grade]", "");
-        params.put("idClassCreator", exam.getIdClassCreator());
-        params.put("idClass", exam.getIdClass());
+        params.put("idClassCreator", userClass.getIdClassCreator());
+        params.put("idClass", userClass.getIdClass());
         params.put("idExam", exam.getId());
-        params.put("personAndGrade[1][id]", "" );
-        params.put("personAndGrade[1][grade]", "");
         params.put("idGradeType", String.valueOf(gradeType));
-
 
         return params;
 
     }
-
-
 }
