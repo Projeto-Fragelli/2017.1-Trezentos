@@ -13,6 +13,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +33,8 @@ import fga.mds.gpp.trezentos.View.Fragment.GroupsFragment;
 import fga.mds.gpp.trezentos.View.Fragment.InfoClassFragment;
 import fga.mds.gpp.trezentos.View.Fragment.StudentsFragment;
 import fga.mds.gpp.trezentos.View.Adapters.ViewPagerAdapter;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class ExamActivity extends AppCompatActivity {
 
@@ -99,49 +105,75 @@ public class ExamActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        UserExamControl userExamControl = UserExamControl.getInstance(getApplicationContext());
+        String serverResponse = null;
 
         switch (item.getItemId()){
             case R.id.action_update_grades:{
-                students = studentsFragment.getStudents();
-
-                HashMap<String, String> firstGrades = userExamControl.getGradesFromStudents(students, 1);
-
-                userExamControl.createGrades(1, firstGrades, exam, userClass);
-
+                serverResponse = saveGrades(1);
                 break;
             }
-
             case R.id.action_update_trezentos_grades: {
-                students = studentsFragment.getStudents();
-
-                HashMap<String,String> secondGrades = userExamControl.getGradesFromStudents(students, 2);
-
-                userExamControl.createGrades(2, secondGrades, exam, userClass);
-
-                //TODO COLOCAR AS NOTAS NO FORMATO DESEJADO PRA ENVIAR - ARRAY LIST DE STRING PROVISÓRIO
-                //TODO VALIDAR RESPOSTA DA API
-                //exam.setSecondGrades(firstGrades);
-                //response = userExamControl.createGrades(2);
-                //validateServerResponse(response);
-
+                serverResponse = saveGrades(2);
                 break;
             }
-
             case R.id.action_sort_groups:{
 //                Bundle bundle = new Bundle();
 //                bundle = buildBundleToSortGroups(bundle);
 //                initFragmentTransation(bundle);
                 break;
             }
-
             case R.id.action_send_evaluation: {
-
                 break;
             }
 
         }
+
+        if (serverResponse  != null){
+            validateServerResponse(serverResponse);
+        }
+
+
         return super.onOptionsItemSelected(item);
+
+    }
+
+    private String saveGrades(int gradeType){
+
+        String serverResponse = null;
+        UserExamControl userExamControl = UserExamControl.getInstance(getApplicationContext());
+        students = studentsFragment.getStudents();
+
+        if(students != null){
+            HashMap<String, String> grades = userExamControl.getGradesFromStudents(students, gradeType);
+            serverResponse = userExamControl.createGrades(1, grades, exam, userClass);
+        } else {
+            Toast.makeText(getApplicationContext(), "Não há estudantes cadastrados", Toast.LENGTH_LONG).show();
+        }
+
+        return serverResponse;
+    }
+
+    private void validateServerResponse(String serverResponse){
+
+        JSONObject object;
+        boolean error = false;
+        String message = "";
+
+        try {
+            object = new JSONObject(serverResponse);
+            error = object.getBoolean("error");
+            message = object.getString("message");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if(error) {
+            Toast.makeText(getApplicationContext(),message,
+                    Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(getApplicationContext(), "Notas salvas",
+                    Toast.LENGTH_SHORT).show();
+        }
 
     }
 

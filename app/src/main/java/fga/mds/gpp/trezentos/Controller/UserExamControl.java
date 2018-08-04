@@ -142,8 +142,6 @@ public class UserExamControl{
     public HashMap<String, String> getGradesFromStudents(ArrayList<Student> students, int gradeType){
         HashMap<String, String> grades = new HashMap<>();
 
-
-
         if (gradeType == 1){
             for (Student s1: students){
                 grades.put(s1.getId(), String.valueOf(s1.getFirstGrade()));

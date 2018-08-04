@@ -53,6 +53,7 @@ public class StudentsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         Intent intent = getActivity().getIntent();
         userClass = (UserClass) intent.getSerializableExtra("Class");
         userExam = (Exam) intent.getSerializableExtra("Exam");
@@ -81,11 +82,6 @@ public class StudentsFragment extends Fragment {
         return view;
     }
 
-
-    public static HashMap<String, Double> getHashEmailAndGrade() {
-        Log.d("DEBUGMAP", Integer.toString(mapEmailAndGrade.size()));
-        return mapEmailAndGrade;
-    }
 
 
 }
