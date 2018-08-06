@@ -19,7 +19,7 @@ public class GroupController {
         this.students = students;
     }
 
-    public void sortGroups(){
+    public ArrayList<Group> sortGroups(){
         separateHelpedFromHelpers();
 
         int studentsPerHelper = helped.size() / helpers.size();
@@ -42,6 +42,8 @@ public class GroupController {
                 Log.d("ESTUDANTE AJUDANTE", s.getFisrtName() + " " + g.getNumber() + " AJUDANTE");
             }
         }
+
+        return examGroups;
 
 
     }

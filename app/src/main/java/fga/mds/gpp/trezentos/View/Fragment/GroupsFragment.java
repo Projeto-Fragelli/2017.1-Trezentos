@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,26 +29,27 @@ import java.util.Map;
 
 import fga.mds.gpp.trezentos.Controller.GroupController;
 import fga.mds.gpp.trezentos.Model.Exam;
+import fga.mds.gpp.trezentos.Model.Group;
 import fga.mds.gpp.trezentos.Model.UserClass;
 import fga.mds.gpp.trezentos.R;
+import fga.mds.gpp.trezentos.View.Adapters.GroupAdapter;
 import fga.mds.gpp.trezentos.View.RecyclerViewOnClickListener;
 
-public class GroupsFragment  extends Fragment implements RecyclerViewOnClickListener {
-    private RecyclerView mRecyclerView;
-    private GroupController groupController;
-    private Map<String, Double> firstGrades;
-    private Map<String, Integer> groupses = new HashMap<>();
+public class GroupsFragment  extends Fragment {
+    private ArrayList<Group> groups;
     private Exam exam;
-    private ProgressBar progressBar;
     private UserClass userClass;
-    private TextView groupWarning;
+    private GroupAdapter groupAdapter;
+
+    public void setGroups(ArrayList<Group> groups) {
+        this.groups = groups;
+        groupAdapter.updateGroups(groups);
+    }
 
     @Override
     public void onResume() {
         super.onResume();
-//        if(userClass.getStudents() != null) {
-//            new ServerOperation().execute();
-//        }
+
     }
 
     @Override
@@ -57,26 +59,18 @@ public class GroupsFragment  extends Fragment implements RecyclerViewOnClickList
         Intent intent = getActivity().getIntent();
         exam = (Exam) intent.getSerializableExtra("Exam");
         userClass = (UserClass) intent.getSerializableExtra("Class");
-        groupses.put("asdasd", 2);
-
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBarGroups);
-//        progressBar.setVisibility(View.VISIBLE);
-
-        groupWarning = (TextView) view.findViewById(R.id.not_defined_groups);
 
 
+        groupAdapter = new GroupAdapter(groups, userClass, getContext());
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_groups);
-        recyclerView.setVisibility(View.VISIBLE);
-        recyclerView.setAdapter(new GroupsFragment.Adapter(groupses,
-                getActivity().getApplicationContext(), userClass,
-                recyclerView, firstGrades));
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_groups);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
 
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setAutoMeasureEnabled(true);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
 
-        //checkGroups();
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(groupAdapter);
 
         return view;
     }
@@ -91,175 +85,7 @@ public class GroupsFragment  extends Fragment implements RecyclerViewOnClickList
         }
     }
 
-    private void checkGroups() {
-        if(userClass.getStudents().size() < userClass.getSizeGroups()) {
-            groupWarning.setVisibility(View.VISIBLE);
-        } else {
-            groupWarning.setVisibility(View.GONE);
-        }
-    }
-
-//    private class ServerOperation extends AsyncTask<String, Void, String> {
-//
-//        ServerOperation(){
-//        }
-//
-//        @Override
-//        protected String doInBackground(String... params) {
-//            if(isNetworkAvailable(getContext()) && isInternetAvailable()){ //If internet is ok
-////                groupses = GroupController.getGroups(exam.getNameExam(),
-////                        exam.getUserClassName(), exam.getClassOwnerEmail());
-////                firstGrades = GroupController.getFirstGrades(exam.getNameExam(),
-////                        userClass.getClassName(), userClass.getOwnerEmail());
-//                return "true";
-//
-//            }else{
-//                return null;
-//
-//            }
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String result) {
-//            if (getActivity() != null) {
-//                progressBar.setVisibility(View.GONE);
-//                checkGroups();
-//
-//                RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.recycler_groups);
-//                recyclerView.setVisibility(View.VISIBLE);
-//                recyclerView.setAdapter(new GroupsFragment.Adapter(groupses,
-//                        getActivity().getApplicationContext(), userClass,
-//                        recyclerView, firstGrades));
-//
-//                final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-//                layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//                recyclerView.setLayoutManager(layoutManager);
-//            }
-//        }
-//
-//        @Override
-//        protected void onPreExecute() {
-//            SharedPreferences session = PreferenceManager.getDefaultSharedPreferences(getActivity());
-//        }
-//
-//        @Override
-//        protected void onProgressUpdate(Void... values) {}
-//
-//        public boolean isNetworkAvailable(Context context) {
-//            if (context == null){return false;}
-//
-//            final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
-//            return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
-//        }
-//
-//        public boolean isInternetAvailable() {
-//            try {
-//                final InetAddress address = InetAddress.getByName("www.google.com");
-//                if(!address.equals("")){
-//                    return true;
-//                }
-//
-//            } catch (UnknownHostException e) {
-//
-//            }
-//            return false;
-//        }
-//    }
-
-    private class Adapter extends RecyclerView.Adapter implements View.OnClickListener {
-
-        private final Map<String, Integer> groupses;
-        private final Map<String, Double> firstGrades;
-        private final Context context;
-        private final UserClass userClass;
-        private  RecyclerView recyclerView;
 
 
-        Adapter(Map<String, Integer> groupses, Context context, UserClass userClass,
-                RecyclerView recyclerView, Map<String, Double> firstGrades) {
-            this.groupses = groupses;
-            this.context = context;
-            this.userClass = userClass;
-            this.recyclerView = recyclerView;
-            this.firstGrades = firstGrades;
-        }
 
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(context).inflate(R.layout.groups_item, parent, false);
-            GroupsFragment.ViewHolder holder = new GroupsFragment.ViewHolder(view);
-            view.setOnClickListener(this);
-
-            return holder;
-        }
-
-        @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-            GroupsFragment.ViewHolder holder = (GroupsFragment.ViewHolder) viewHolder;
-
-            holder.groupTitle.setText("Grupo " + Integer.valueOf(position + 1));
-
-            List<Map.Entry<String, Integer>> groupMembers = new LinkedList<>(groupses.entrySet());
-
-            String helpers = "";
-            String helped = "";
-
-            for (Map.Entry<String, Integer> group : groupMembers) {
-                if (group.getValue() == position + 1) {
-                    if (firstGrades.get(group.getKey()) >= userClass.getCutOff()) {
-                        helpers = helpers.concat(group.getKey() + ", ");
-                    } else {
-                        helped = helped.concat(group.getKey() + ", ");
-                    }
-                }
-            }
-
-            if (!helpers.equals("") && !helped.equals("")) {
-                holder.helpers.setText(helpers.substring(0, helpers.length()-2));
-                holder.helped.setText(helped.substring(0, helped.length()-2));
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            if (groupses == null){
-                return 0;
-            }else{
-                return groupses.size();
-            }
-
-//            return groupses.size()/userClass.getSizeGroups();
-
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return super.getItemId(position);
-        }
-
-
-        @Override
-        public void onClick(View v) {
-            // do nothing for now
-        }
-    }
-
-    private class ViewHolder extends RecyclerView.ViewHolder {
-
-        TextView groupTitle;
-        TextView helpers;
-        TextView helped;
-
-        ViewHolder(View view) {
-            super(view);
-            groupTitle = (TextView) view.findViewById(R.id.group_number);
-            helpers = (TextView) view.findViewById(R.id.helpers1);
-            //helped = (TextView) view.findViewById(R.id.helped1);
-        }
-    }
-
-    @Override
-    public void onClickListener(View view, int position) {
-        Toast.makeText(getActivity(), "Position: " + position, Toast.LENGTH_SHORT).show();
-    }
 }

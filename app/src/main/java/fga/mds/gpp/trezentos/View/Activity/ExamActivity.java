@@ -26,6 +26,7 @@ import fga.mds.gpp.trezentos.Controller.UserAccountControl;
 import fga.mds.gpp.trezentos.Controller.UserExamControl;
 import fga.mds.gpp.trezentos.Exception.UserException;
 import fga.mds.gpp.trezentos.Model.Exam;
+import fga.mds.gpp.trezentos.Model.Group;
 import fga.mds.gpp.trezentos.Model.Student;
 import fga.mds.gpp.trezentos.Model.UserClass;
 import fga.mds.gpp.trezentos.R;
@@ -186,8 +187,8 @@ public class ExamActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         GroupController groupController;
                         groupController = new GroupController(userClass, students);
-                        groupController.sortGroups();
-
+                        ArrayList<Group> examGroups = groupController.sortGroups();
+                        groupsFragment.setGroups(examGroups);
                     }
 
                 })
