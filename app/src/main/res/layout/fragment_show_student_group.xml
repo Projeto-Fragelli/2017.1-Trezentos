@@ -6,36 +6,13 @@
     tools:context="fga.mds.gpp.trezentos.View.Fragment.ShowStudentGroupFragment"
     android:background="#ffbd19">
 
-    <ProgressBar
-        android:id="@+id/progress_bar_student_group"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:visibility="gone" />
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/group_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_margin="5dp"
-            android:gravity="center"
-            android:background="@drawable/shape_item"
-            android:text="@string/mine_group"
-            android:textSize="25sp"
-            android:textColor="#FFF"
-            />
+        <include layout="@layout/groups_item"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_student_group"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:clipToPadding="false"
-            />
     </LinearLayout>
 
 </FrameLayout>

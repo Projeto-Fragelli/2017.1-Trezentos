@@ -3,6 +3,9 @@ package fga.mds.gpp.trezentos.Controller;
 import android.util.Log;
 
 import java.util.ArrayList;
+
+import fga.mds.gpp.trezentos.Exception.UserException;
+import fga.mds.gpp.trezentos.Model.Exam;
 import fga.mds.gpp.trezentos.Model.Group;
 import fga.mds.gpp.trezentos.Model.Student;
 import fga.mds.gpp.trezentos.Model.UserClass;
@@ -17,6 +20,10 @@ public class GroupController {
     public GroupController (UserClass userClass, ArrayList<Student> students) {
         this.userClass = userClass;
         this.students = students;
+    }
+
+    public GroupController () {
+
     }
 
     public ArrayList<Group> sortGroups(){
@@ -115,6 +122,34 @@ public class GroupController {
 
             groupNumber++;
         }
+    }
+
+    public Group requestStudentGroup(UserClass userClass, Exam exam, String userId){
+        //TODO PEGAR GRUPO DA API
+        //GRUPO DE TESTE
+
+        Group group = new Group(1);
+        double i;
+
+        for(i=0; i<10; i++){
+
+            Student s = new Student();
+            s.setFirstGrade(i);
+            s.setSecondGrade(i);
+
+            try {
+                s.setFirstName("Teste" + i);
+            } catch (UserException e) {
+                e.printStackTrace();
+            }
+
+            group.addHelper(s);
+            group.addHelped(s);
+
+        }
+
+        return group;
+
     }
 
 
