@@ -43,7 +43,7 @@ public class GroupAdapter extends RecyclerView.Adapter  {
         Group group = groups.get(position);
         groupViewHolder = (GroupViewHolder) holder;
 
-        groupViewHolder.groupNumber.setText(String.valueOf(position + 1));
+        groupViewHolder.groupNumber.setText("Grupo " + String.valueOf(position + 1));
 
         groupStudentAdapterHelped = new GroupStudentAdapter(group.getHelped(), userClass, context);
         groupStudentAdapterHelpers = new GroupStudentAdapter(group.getHelpers(), userClass, context);

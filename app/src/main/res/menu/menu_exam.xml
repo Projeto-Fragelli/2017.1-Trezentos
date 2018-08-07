@@ -20,8 +20,8 @@
 
 
     <item
-        android:id="@+id/action_send_evaluation"
+        android:id="@+id/action_save_groups"
         android:orderInCategory="200"
-        android:title="@string/send_evaluation"
+        android:title="Salvar Grupos"
         app:showAsAction="never" />
 </menu>

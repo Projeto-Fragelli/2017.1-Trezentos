@@ -29,12 +29,6 @@ public class GroupController {
     public ArrayList<Group> sortGroups(){
         separateHelpedFromHelpers();
 
-        int studentsPerHelper = helped.size() / helpers.size();
-        Log.d("ESTUDANTES POR AJUDANTE", " " + studentsPerHelper);
-        int groupNumber = 1;
-        int i, helpersCount = 0, helpedCount = 0;
-
-
         if(helped.size() >= helpers.size()){
             sortWtihMoreHelped();
         } else {
@@ -66,8 +60,8 @@ public class GroupController {
             }
         }
 
-        Log.d("AJUDANTE", String.valueOf(helpers.size()));
-        Log.d("AJUDADO", String.valueOf(helped.size()));
+        Log.d("AJUDANTES", String.valueOf(helpers.size()));
+        Log.d("AJUDADOS", String.valueOf(helped.size()));
     }
 
     private void sortWithMoreHelpers(){
@@ -124,8 +118,40 @@ public class GroupController {
         }
     }
 
+    public ArrayList<Group> requestGroups(UserClass userClass, Exam exam, String userId) {
+
+        //TODO PEGAR TODOS OS GRUPOS DE UMA PROVA NA API
+        //GRUPOS DE TESTE
+
+        ArrayList<Group> groups = new ArrayList<>();
+        for (int i=0; i<5; i++){
+            Group group = new Group(1);
+            double j;
+
+            for (j = 0; j < 5; j++) {
+
+                Student s = new Student();
+                s.setFirstGrade(j);
+                s.setSecondGrade(j);
+
+                try {
+                    s.setFirstName("Teste" + i);
+                } catch (UserException e) {
+                    e.printStackTrace();
+                }
+
+                group.addHelper(s);
+                group.addHelped(s);
+
+            }
+            groups.add(group);
+        }
+
+        return groups;
+    }
+
     public Group requestStudentGroup(UserClass userClass, Exam exam, String userId){
-        //TODO PEGAR GRUPO DA API
+        //TODO PEGAR GRUPO DO ALUNO NA API
         //GRUPO DE TESTE
 
         Group group = new Group(1);
@@ -149,6 +175,11 @@ public class GroupController {
         }
 
         return group;
+
+    }
+
+    public void sendGroups(ArrayList<Group> groups){
+        //TODO ENVIAR GRUPOS PARA A API
 
     }
 

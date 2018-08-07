@@ -40,6 +40,7 @@ public class GroupsFragment  extends Fragment {
     private Exam exam;
     private UserClass userClass;
     private GroupAdapter groupAdapter;
+    private String userId;
 
     public void setGroups(ArrayList<Group> groups) {
         this.groups = groups;
@@ -55,11 +56,16 @@ public class GroupsFragment  extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container
             , Bundle savedInstanceState) {
+
         final View view = inflater.inflate(R.layout.fragment_groups, container, false);
         Intent intent = getActivity().getIntent();
         exam = (Exam) intent.getSerializableExtra("Exam");
         userClass = (UserClass) intent.getSerializableExtra("Class");
+        SharedPreferences session = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        userId = session.getString("userId", "");
 
+        GroupController groupController = new GroupController();
+        groups = groupController.requestGroups(userClass, exam, userId);
 
         groupAdapter = new GroupAdapter(groups, userClass, getContext());
 
@@ -73,16 +79,6 @@ public class GroupsFragment  extends Fragment {
         recyclerView.setAdapter(groupAdapter);
 
         return view;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        if(userClass.getStudents().size() < userClass.getSizeGroups()) {
-            menu.findItem(R.id.action_sort_groups).setVisible(false);
-        } else {
-            menu.findItem(R.id.action_sort_groups).setVisible(true);
-        }
     }
 
 

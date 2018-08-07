@@ -42,6 +42,9 @@ public class ExamActivity extends AppCompatActivity {
     private StudentsFragment studentsFragment;
     private GroupsFragment groupsFragment;
     private ArrayList<Student> students;
+    private GroupController groupController;
+    private ArrayList<Group> examGroups;
+    private ViewPager activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -72,7 +75,7 @@ public class ExamActivity extends AppCompatActivity {
         adapter.addFragment(studentsFragment, "ESTUDANTES");
         adapter.addFragment(groupsFragment, "GRUPOS");
 
-        ViewPager activity = findViewById(R.id.view_pager);
+        activity = findViewById(R.id.view_pager);
         activity.setAdapter(adapter);
 
         TabLayout tabLayout =  findViewById(R.id.tab_layout);
@@ -115,11 +118,24 @@ public class ExamActivity extends AppCompatActivity {
                 break;
             }
             case R.id.action_sort_groups:{
-                serverResponse = saveGrades(1);
-                confirmGroupsSortingDialog();
+                students = studentsFragment.getStudents();
+                if(students != null){
+                    confirmGroupsSortingDialog();
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "Não há estudantes cadastrados", Toast.LENGTH_LONG).show();
+                }
+
                 break;
             }
-            case R.id.action_send_evaluation: {
+            case R.id.action_save_groups: {
+                if(examGroups != null){
+                    groupController.sendGroups(examGroups);
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "Não há grupos ordenados para enviar", Toast.LENGTH_LONG).show();
+                }
+
                 break;
             }
 
@@ -142,7 +158,7 @@ public class ExamActivity extends AppCompatActivity {
 
         if(students != null){
             HashMap<String, String> grades = userExamControl.getGradesFromStudents(students, gradeType);
-            serverResponse = userExamControl.createGrades(1, grades, exam, userClass);
+            serverResponse = userExamControl.createGrades(gradeType, grades, exam, userClass);
         } else {
             Toast.makeText(getApplicationContext(), "Não há estudantes cadastrados", Toast.LENGTH_LONG).show();
         }
@@ -178,26 +194,24 @@ public class ExamActivity extends AppCompatActivity {
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this)
                 //set message, title, and icon
                 .setTitle("Montar grupos")
-                .setMessage("Você tem certeza que deseja montar grupos? " +
-                        "Tenha certeza de que todas as notas foram preenchidas " +
-                        "antes de confirmar.")
+                .setMessage("Os grupos só estarão visíveis para você. " +
+                        "Para salvá-los, ordene e em seguida " +
+                        " selecione salvar grupos.")
 
-                .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Ordenar", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        GroupController groupController;
                         groupController = new GroupController(userClass, students);
-                        ArrayList<Group> examGroups = groupController.sortGroups();
+                        examGroups = groupController.sortGroups();
                         groupsFragment.setGroups(examGroups);
+                        activity.setCurrentItem(1);
                     }
 
                 })
 
-                .setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-
                         dialog.dismiss();
-
                     }
                 })
                 .create();
