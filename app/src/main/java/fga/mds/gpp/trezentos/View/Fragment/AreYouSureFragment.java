@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,7 +80,7 @@ public class AreYouSureFragment extends DialogFragment implements View.OnClickLi
     }
 
     private void initButtons(View view){
-        cancelButton = (Button) view.findViewById(R.id.cancel_are_you_sure);
-        confirmButton = (Button) view.findViewById(R.id.confirm_are_you_sure);
+        cancelButton = view.findViewById(R.id.cancel_are_you_sure);
+        confirmButton = view.findViewById(R.id.confirm_are_you_sure);
     }
 }
