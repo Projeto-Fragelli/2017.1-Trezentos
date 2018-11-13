@@ -236,12 +236,12 @@
                                     android:id="@+id/text_view_addition"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:text="ACRÉCIMO"
                                     android:layout_marginLeft="20dp"
-                                    android:textStyle="bold"
+                                    android:layout_marginTop="10dp"
+                                    android:text="ACRÉSCIMO"
+                                    android:textColor="@color/colorPrimaryDark"
                                     android:textSize="17dp"
-                                    android:textColor="@color/colorPrimaryDark"/>
+                                    android:textStyle="bold" />
 
                                 <TextView
                                     android:id="@+id/text_view_addition_x"
