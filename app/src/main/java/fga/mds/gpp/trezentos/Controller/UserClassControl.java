@@ -275,15 +275,15 @@ public class UserClassControl {
         try{
             userClass.setIdClass(jsonObject.getString("idClass"));
             userClass.setIdClassCreator(jsonObject.getString("idClassCreator"));
-            userClass.setClassName(jsonObject.getString("className"));
-            userClass.setPassword(jsonObject.getString("classPassword"));
-            userClass.setCutOff(Float.parseFloat(jsonObject.getString("classCutOff")));
-            userClass.setSizeGroups(Integer.parseInt(jsonObject.getString("classSizeOfGroup")));
-            userClass.setAddition(Float.parseFloat(jsonObject.getString("classAddition")));
-            userClass.setInstitution(jsonObject.getString("classInstitution"));
-            userClass.setDescription(jsonObject.getString("classDescription"));
             userClass.setCreatorName(jsonObject.getString("classCreatorName"));
-            userClass.setCreationDate(jsonObject.getString("classCreationDate"));
+            userClass.setClassName(jsonObject.getString("className"));
+          userClass.setPassword(jsonObject.getString("classPassword"));
+          userClass.setCutOff(Float.parseFloat(jsonObject.getString("classCutOff")));
+          userClass.setSizeGroups(Integer.parseInt(jsonObject.getString("classSizeOfGroup")));
+          userClass.setAddition(Float.parseFloat(jsonObject.getString("classAddition")));
+          userClass.setInstitution(jsonObject.getString("classInstitution"));
+          userClass.setDescription(jsonObject.getString("classDescription"));
+          userClass.setCreationDate(jsonObject.getString("classCreationDate"));
         }catch(JSONException | UserException e){
             e.printStackTrace();
         }
