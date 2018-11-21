@@ -3,6 +3,7 @@ package fga.mds.gpp.trezentos.View.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -11,8 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 
 import fga.mds.gpp.trezentos.Controller.UserAccountControl;
@@ -47,8 +50,9 @@ public class MainActivity extends AppCompatActivity{
         searchEditText.setTextColor(getResources().getColor(R.color.white));
         searchEditText.setHintTextColor(getResources().getColor(R.color.white));
 
+
         SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
-            public boolean onQueryTextChange(String newText) {
+            public boolean onQueryTextChange(final String newText) {
                 if(toolbar.getTitle().equals("Salas")){
                     ClassFragment classFragment = ClassFragment.getInstance();
                     classFragment.filterClassList(newText);
@@ -57,6 +61,7 @@ public class MainActivity extends AppCompatActivity{
                     ExploreFragment exploreFragment = ExploreFragment.getInstance();
                     exploreFragment.filterClassList(newText);
                 }
+
                 return true;
             }
 
@@ -66,7 +71,17 @@ public class MainActivity extends AppCompatActivity{
 
         };
 
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!toolbar.getTitle().equals("Explorar") && !toolbar.getTitle().equals("Salas")){
+                    bottomNavigationView.setSelectedItemId(R.id.usuario_item);
+                }
+            }
+        });
+
         searchView.setOnQueryTextListener(queryTextListener);
+
         return true;
     }
 
