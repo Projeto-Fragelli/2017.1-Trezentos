@@ -4,10 +4,10 @@ about: Template padrão para a criação de issues
 
 ---
 
-US X - Título da issue
+# Título da issue
 
-**Descrição**
+## **Descrição**
 
-**Tarefas**
+## **Tarefas**
 
-**Critérios de Aceitação**
+## **Critérios de Aceitação**
