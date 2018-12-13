@@ -24,13 +24,17 @@ public class SlideAdapter extends PagerAdapter {
     }
 
     public int[] sildeImages = {
-            0xff00000,
-            0x000
+            R.drawable.tutorial_classes,
+            R.drawable.tutorial_class,
+            R.drawable.tutorial_tests,
+            R.drawable.tutorial_explore
     };
 
     public String[] slideDesc = {
-            "asd",
-            "dsa"
+            "Na tela das salas o usuario podera pesquisar suas salas, assim como suas salas favoritas, alem de ver todas as salas que esta cadastrado",
+            "Ao entrar na sua sala, voce tera acesso a suas provas e as informacoes da sua sala",
+            "Ao selecionar alguma prova voce tera acesso as estudantes da sua sala que fizeram a prova. Alem de gerar grupos, salvar notas, e encaminhar avaliacoes e ver os grupos que foram formados",
+            "Na aba de explorar voce pode ver todas as turmas, alem de pesquisar as turmas e entrar nas mesmas"
     };
 
 
@@ -53,8 +57,7 @@ public class SlideAdapter extends PagerAdapter {
         TextView tvInstruction = view.findViewById(R.id.tv_desc_instruction);
         ImageView imgInstruction = view.findViewById(R.id.iv_img_instruction);
 
-//        imgInstruction.setImageResource(sildeImages[position]);
-        imgInstruction.setBackgroundColor(sildeImages[position]);
+        imgInstruction.setImageResource(sildeImages[position]);
         tvInstruction.setText(slideDesc[position]);
 
         container.addView(view);
@@ -64,7 +67,6 @@ public class SlideAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        super.destroyItem(container, position, object);
-        container.removeView((View) object);
+        container.removeView((RelativeLayout) object);
     }
 }

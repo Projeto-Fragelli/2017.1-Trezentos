@@ -12,16 +12,21 @@
         android:orientation="vertical">
 
         <ImageView
+            android:layout_gravity="center"
             android:id="@+id/iv_img_instruction"
-            android:layout_width="148dp"
-            android:layout_height="148dp"
-            android:background="#000"/>
+            android:layout_width="168dp"
+            android:layout_height="208dp"
+            android:background="@color/colorDialogFragmentClass"/>
 
         <TextView
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:layout_marginTop="18dp"
+            android:textAlignment="center"
             android:id="@+id/tv_desc_instruction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:layout_gravity="center"
             android:text="asd"
             android:textColor="#000"/>

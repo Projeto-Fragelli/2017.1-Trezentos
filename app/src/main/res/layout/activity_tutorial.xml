@@ -4,23 +4,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorDialogFragmentClass"
     tools:context="fga.mds.gpp.trezentos.View.Activity.TutorialActivity">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_tutorial"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/ll_items">
+        android:layout_above="@+id/btn_back">
 
     </android.support.v4.view.ViewPager>
 
     <LinearLayout
-        android:id="@+id/ll_items"
+
+        android:id="@+id/ll_dots"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:layout_below="@+id/vp_tutorial"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"
         android:orientation="horizontal">
 
     </LinearLayout>
+
+    <Button
+        android:visibility="invisible"
+        android:id="@+id/btn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/transparent"
+        android:text="Voltar" />
+
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/vp_tutorial"
+        android:layout_alignParentRight="true"
+        android:background="@color/transparent"
+        android:text="próximo" />
 
 </RelativeLayout>

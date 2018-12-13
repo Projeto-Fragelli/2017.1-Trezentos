@@ -8,6 +8,7 @@
     <color name="colorBottomMenu"> #262626 </color>
     <color name="colorDialogFragmentClass">#FFE010</color>
     <color name="transparent">#00000000</color>
+    <color name="whiteTransparent">#cccccc</color>
     <color name="white">#ffff</color>
 
 

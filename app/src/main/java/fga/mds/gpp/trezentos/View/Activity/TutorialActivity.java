@@ -1,9 +1,13 @@
 package fga.mds.gpp.trezentos.View.Activity;
 
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -17,32 +21,60 @@ public class TutorialActivity extends AppCompatActivity {
     private TextView[] mDots;
     private ViewPager viewPager;
 
+    private int currentPage;
+    private Button btnNext;
+    private Button btnPrevious;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorial);
 
-        linearLayout = findViewById(R.id.ll_items);
+        linearLayout = findViewById(R.id.ll_dots);
         viewPager = findViewById(R.id.vp_tutorial);
-
-        slideAdapter = new SlideAdapter(getApplication());
+        btnPrevious = findViewById(R.id.btn_back);
+        btnNext = findViewById(R.id.btn_next);
+        slideAdapter = new SlideAdapter(this);
 
         viewPager.setAdapter(slideAdapter);
         addDotsIndicator(0);
 
         viewPager.addOnPageChangeListener(viewListener);
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (currentPage == mDots.length - 1) {
+                    Intent intent = new Intent(TutorialActivity.this,SignInActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    viewPager.setCurrentItem(currentPage + 1);
+                }
+            }
+        });
+        btnPrevious.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewPager.setCurrentItem(currentPage -1);
+            }
+        });
     }
 
     private void addDotsIndicator(int posistion){
-        mDots = new TextView[2];
+        mDots = new TextView[4];
+        linearLayout.removeAllViews();
         for (int i = 0; i < mDots.length; i++){
-            mDots[i] = new TextView(getApplication());
+
+            mDots[i] = new TextView(this);
             mDots[i].setText(Html.fromHtml("&#8226;"));
             mDots[i].setTextSize(35);
-            mDots[i].setTextColor(0xcccccc);
+            mDots[i].setTextColor(getResources().getColor(R.color.whiteTransparent));
+
+            linearLayout.addView(mDots[i]);
+
         }
-        if (mDots.length > 0 ){
-            mDots[posistion].setTextColor(0xFFFFFF);
+        if (mDots.length > 0){
+            mDots[posistion].setTextColor(getResources().getColor(R.color.white));
         }
     }
 
@@ -55,6 +87,29 @@ public class TutorialActivity extends AppCompatActivity {
         @Override
         public void onPageSelected(int position) {
             addDotsIndicator(position);
+            currentPage = position;
+
+            if (position == 0){
+                btnNext.setEnabled(true);
+                btnPrevious.setEnabled(false);
+                btnPrevious.setVisibility(View.INVISIBLE);
+                btnNext.setText("Próximo");
+                btnPrevious.setText("");
+            }
+            else if (position == mDots.length -1) {
+                btnPrevious.setEnabled(true);
+                btnNext.setEnabled(true);
+                btnPrevious.setVisibility(View.VISIBLE);
+                btnNext.setText("Terminar");
+                btnPrevious.setText("Voltar");
+            }
+            else {
+                btnPrevious.setEnabled(true);
+                btnNext.setEnabled(true);
+                btnPrevious.setVisibility(View.VISIBLE);
+                btnNext.setText("Próximo");
+                btnPrevious.setText("Voltar");
+            }
         }
 
         @Override
