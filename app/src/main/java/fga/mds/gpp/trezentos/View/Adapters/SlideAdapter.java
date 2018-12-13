@@ -31,10 +31,10 @@ public class SlideAdapter extends PagerAdapter {
     };
 
     public String[] slideDesc = {
-            "Na tela das salas o usuario podera pesquisar suas salas, assim como suas salas favoritas, alem de ver todas as salas que esta cadastrado",
-            "Ao entrar na sua sala, voce tera acesso a suas provas e as informacoes da sua sala",
-            "Ao selecionar alguma prova voce tera acesso as estudantes da sua sala que fizeram a prova. Alem de gerar grupos, salvar notas, e encaminhar avaliacoes e ver os grupos que foram formados",
-            "Na aba de explorar voce pode ver todas as turmas, alem de pesquisar as turmas e entrar nas mesmas"
+            "Na tela das salas você poderá pesquisar suas salas, assim como suas salas favoritas, além de ver todas as salas as quais está cadastrado",
+            "Ao entrar na sua sala, você terá acesso a suas provas e as informações da sua sala",
+            "Ao selecionar alguma prova você terá acesso aos estudantes da sua sala que fizeram a prova. Além de gerar grupos, salvar notas, encaminhar avaliações e ver os grupos que foram formados",
+            "Na aba de explorar você pode ver todas as turmas, além de pesquisar as turmas e entrar nas mesmas"
     };
 
 
