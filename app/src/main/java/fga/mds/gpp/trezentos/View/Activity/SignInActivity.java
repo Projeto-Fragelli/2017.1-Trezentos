@@ -116,7 +116,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
             case R.id.button_about:
                 // Go to about screen
-                Intent showAbout = new Intent(getApplicationContext(), AboutOnLogin.class);
+                Intent showAbout = new Intent(getApplicationContext(), TutorialActivity.class);
                 startActivity(showAbout);
                 break;
         }
