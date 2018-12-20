@@ -12,10 +12,11 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/star_image"
-        android:icon="@drawable/ic_star"
-        app:showAsAction="always"
-        android:title="" />
+        android:title="@string/logout"
+        android:id="@+id/item_logout" />
+    <item
+        android:title="@string/salas_favoritas"
+        android:id="@+id/item_favourites_classes" />
 
 
 </menu>

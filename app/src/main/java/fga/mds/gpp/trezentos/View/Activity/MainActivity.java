@@ -22,12 +22,17 @@ import fga.mds.gpp.trezentos.View.Fragment.ClassFragment;
 import fga.mds.gpp.trezentos.View.Fragment.ExploreFragment;
 import fga.mds.gpp.trezentos.View.Fragment.UserFragment;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 
 public class MainActivity extends AppCompatActivity{
 
     private BottomNavigationView bottomNavigationView;
     private Fragment selectedFragment;
     private Toolbar toolbar = null;
+    private UserAccountControl userAccountControl;
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -70,17 +75,20 @@ public class MainActivity extends AppCompatActivity{
         return true;
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item){
-//        int id = item.getItemId();
-//        // Noinspection SimplifiableIfStatement
-//        if(id == R.id.search_classes){
-//            goClassScreen();
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        userAccountControl = UserAccountControl.getInstance(getApplicationContext());
+
+        if(id == R.id.item_logout){
+            userAccountControl.logOutUser();
+            userAccountControl.disconnectFromFacebook();
+            goLoginScreen();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -157,4 +165,11 @@ public class MainActivity extends AppCompatActivity{
         startActivity(intent);
     }
 
+    private void goLoginScreen() {
+        Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 }

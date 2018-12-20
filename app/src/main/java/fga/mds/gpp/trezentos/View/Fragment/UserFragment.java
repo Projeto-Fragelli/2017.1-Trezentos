@@ -31,7 +31,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class UserFragment extends Fragment implements View.OnClickListener{
 
-    private ImageView exitButton;
+//    private ImageView exitButton;
     private Button changePasswordButton;
     private Button deleteAccountButton;
 
@@ -74,11 +74,11 @@ public class UserFragment extends Fragment implements View.OnClickListener{
         userAccountControl = UserAccountControl.getInstance(getApplicationContext());
         initSharedPreference();
 
-        exitButton = view.findViewById(R.id.exit_button);
+//        exitButton = view.findViewById(R.id.exit_button);
         changePasswordButton = view.findViewById(R.id.button_change_password);
         deleteAccountButton = view.findViewById(R.id.button_delete_user);
 
-        exitButton.setOnClickListener(this);
+//        exitButton.setOnClickListener(this);
         changePasswordButton.setOnClickListener(this);
         deleteAccountButton.setOnClickListener(this);
 
@@ -100,12 +100,12 @@ public class UserFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View view){
         switch (view.getId()){
-            case R.id.exit_button: {
-                userAccountControl.logOutUser();
-                userAccountControl.disconnectFromFacebook();
-                goLoginScreen();
-                break;
-            }
+//            case R.id.exit_button: {
+//                userAccountControl.logOutUser();
+//                userAccountControl.disconnectFromFacebook();
+//                goLoginScreen();
+//                break;
+//            }
             case R.id.button_change_password: {
                 goChangePasswordScreen();
                 break;
