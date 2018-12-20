@@ -148,4 +148,6 @@
     <string name="return_to_class">Voltar</string>
     <string name="save_class">Salvar</string>
     <string name="out_of_class">Sair da sala</string>
+    <string name="salas_favoritas">Salas favoritas</string>
+    <string name="logout">Logout</string>
 </resources>
