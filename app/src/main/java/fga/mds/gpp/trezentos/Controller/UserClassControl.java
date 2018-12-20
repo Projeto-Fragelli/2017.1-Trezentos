@@ -68,22 +68,23 @@ public class UserClassControl {
     }
 
     public String validateCreateClass(String className, String classInstitution, String classCutOff,
-                                    String classPassword,String classPasswordConfirm, String classAddition, String classSizeGroups,
+                                    String classPassword,String classPasswordConfirm, String classAddition/*, String classSizeGroups*/,
                                     String classDescription, String classCreationDate, String idClassCreator,
                                     String classCreatorName) throws UserException {
 
         try {
 
-            if (classSizeGroups == null || classSizeGroups.isEmpty()){
-                throw new UserException("O tamanho do grupo não pode estar vazio!");
-            }else if (classCutOff == null || classCutOff.isEmpty()){
+       //     if (classSizeGroups == null || classSizeGroups.isEmpty()){
+         //       throw new UserException("O tamanho do grupo não pode estar vazio!");
+           // }
+            if (classCutOff == null || classCutOff.isEmpty()){
                 throw new UserException("Preencha o valor da nota de corte.");
             }else if (classAddition == null || classAddition.isEmpty()){
                 throw new UserException("Preencha o valor do acréscimo.");
             }
 
             userClass = new UserClass(className, classInstitution, Float.valueOf(classCutOff), classPassword, classPasswordConfirm,
-                    Float.valueOf(classAddition), Integer.valueOf(classSizeGroups), classDescription,classCreationDate, idClassCreator, classCreatorName);
+                    Float.valueOf(classAddition)/*, Integer.valueOf(classSizeGroups)*/, classDescription,classCreationDate, idClassCreator, classCreatorName);
         }catch (UserException e){
             return e.getMessage();
         }
