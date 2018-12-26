@@ -83,8 +83,7 @@ public class CreateClassActivity extends AppCompatActivity {
                 String errorMessage = "";
                 try {
                     errorMessage = userClassControl.validateCreateClass(classNameField.getText().toString(),
-                            institutionField.getText().toString(),
-                            cutOffField.getText().toString(),
+                            institutionField.getText().toString(), "5.0",
                             passwordField.getText().toString(),
                             passwordFieldConfirmation.getText().toString(),
                             additionField.getText().toString(),
@@ -175,9 +174,9 @@ public class CreateClassActivity extends AppCompatActivity {
     private void initView() {
         classNameField = (EditText) findViewById(R.id.edit_text_class_name);
         institutionField = (EditText) findViewById(R.id.edit_text_institution);
-        // sizeGroupsField = (EditText) findViewById(R.id.edit_text_size_groups);
-        cutOffField = (EditText) findViewById(R.id.edit_text_cut_grade);
-        additionField = (EditText) findViewById(R.id.edit_text_addition);
+        //sizeGroupsField = (EditText) findViewById(R.id.edit_text_size_groups);
+        //cutOffField = (EditText) findViewById(R.id.edit_text_cut_grade);
+        //additionField = (EditText) findViewById(R.id.edit_text_addition);
         passwordField = (EditText) findViewById(R.id.edit_text_class_password);
         passwordFieldConfirmation = (EditText) findViewById(R.id.edit_text_class_password_confirmation);
         descriptionField = (EditText) findViewById(R.id.edit_text_description);
