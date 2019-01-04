@@ -36,7 +36,8 @@
         <activity android:name=".View.Activity.StudentClassActivity" />
         <activity android:name=".View.Activity.StudentExamActivity" />
         <activity android:name=".View.Activity.ForgotPasswordActivity" />
-        <activity android:name=".View.Activity.TutorialActivity"></activity>
+        <activity android:name=".View.Activity.TutorialActivity" />
+        <activity android:name=".View.Activity.AboutActivity"></activity>
     </application>
 
 </manifest>

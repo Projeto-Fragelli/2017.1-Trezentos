@@ -1,63 +1,37 @@
-package fga.mds.gpp.trezentos.View.Fragment;
+package fga.mds.gpp.trezentos.View.Activity;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
+
 import java.util.ArrayList;
 
-import fga.mds.gpp.trezentos.Model.UserClass;
-import fga.mds.gpp.trezentos.View.Adapters.AboutAdapter;
 import fga.mds.gpp.trezentos.Exception.UserException;
 import fga.mds.gpp.trezentos.Model.About;
 import fga.mds.gpp.trezentos.R;
-import fga.mds.gpp.trezentos.View.Adapters.ClassFragmentAdapter;
+import fga.mds.gpp.trezentos.View.Adapters.AboutAdapter;
 import fga.mds.gpp.trezentos.View.ViewHolder.AboutViewHolder;
-import fga.mds.gpp.trezentos.View.ViewHolder.ClassViewHolder;
 
-public class AboutFragment extends Fragment{
-
+public class AboutActivity extends AppCompatActivity {
     private ArrayList<About> about;
     private static AboutAdapter adapter;
-    private static AboutFragment fragment;
-
-    public static AboutFragment getInstance() {
-        if(fragment == null){
-            fragment = new AboutFragment();
-        }
-        return fragment;
-    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
+        setContentView(R.layout.activity_about);
+        final RecyclerView recyclerView =  findViewById(R.id.rv_about);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState){
-        // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.fragment_about, container, false);
-        final RecyclerView recyclerView =  view.findViewById(R.id.about_list_view);
         aboutItem();
-
-
-        RecyclerView.LayoutManager layout = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager layout = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layout);
         recyclerView.setAdapter(adapter);
-
-        return view;
     }
-    
+
     public void aboutItem(){
         about = new ArrayList<>();
         try {
@@ -72,7 +46,7 @@ public class AboutFragment extends Fragment{
         catch (UserException e){
             e.printStackTrace();
         }
-        adapter = new AboutAdapter(about,getActivity().getApplicationContext());
+        adapter = new AboutAdapter(about,this);
         adapter.setOnItemClickListener(callJoinClass());
     }
 
@@ -108,7 +82,6 @@ public class AboutFragment extends Fragment{
         myWebLink.setData(Uri.parse(link));
         startActivity(myWebLink);
     }
-
     private AboutViewHolder.OnItemClickListener callJoinClass() {
         return new AboutViewHolder.OnItemClickListener() {
             @Override
