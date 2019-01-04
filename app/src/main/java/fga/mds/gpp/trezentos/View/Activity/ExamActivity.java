@@ -116,12 +116,12 @@ public class ExamActivity extends AppCompatActivity {
                 serverResponse = saveGrades(2);
                 break;
             }
-            case R.id.action_sort_groups:{
-//                Bundle bundle = new Bundle();
-//                bundle = buildBundleToSortGroups(bundle);
-//                initFragmentTransation(bundle);
-                break;
-            }
+//            case R.id.action_sort_groups:{
+////                Bundle bundle = new Bundle();
+////                bundle = buildBundleToSortGroups(bundle);
+////                initFragmentTransation(bundle);
+//                break;
+//            }
             case R.id.action_send_evaluation: {
                 break;
             }
