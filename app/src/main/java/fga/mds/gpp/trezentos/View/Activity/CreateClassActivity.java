@@ -87,7 +87,7 @@ public class CreateClassActivity extends AppCompatActivity {
                             passwordField.getText().toString(),
                             passwordFieldConfirmation.getText().toString(),
                             additionField.getText().toString(),
-                            // sizeGroupsField.getText().toString(),
+                            sizeGroupsField.getText().toString(),
                             descriptionField.getText().toString(),
                             dateCreation,
                             userId,
@@ -174,9 +174,9 @@ public class CreateClassActivity extends AppCompatActivity {
     private void initView() {
         classNameField = (EditText) findViewById(R.id.edit_text_class_name);
         institutionField = (EditText) findViewById(R.id.edit_text_institution);
-        //sizeGroupsField = (EditText) findViewById(R.id.edit_text_size_groups);
-        //cutOffField = (EditText) findViewById(R.id.edit_text_cut_grade);
-        //additionField = (EditText) findViewById(R.id.edit_text_addition);
+        sizeGroupsField = (EditText) findViewById(R.id.edit_text_size_groups);
+        cutOffField = (EditText) findViewById(R.id.edit_text_cut_grade);
+        additionField = (EditText) findViewById(R.id.edit_text_addition);
         passwordField = (EditText) findViewById(R.id.edit_text_class_password);
         passwordFieldConfirmation = (EditText) findViewById(R.id.edit_text_class_password_confirmation);
         descriptionField = (EditText) findViewById(R.id.edit_text_description);
@@ -216,7 +216,7 @@ public class CreateClassActivity extends AppCompatActivity {
                 descriptionField.requestFocus();
                 descriptionField.setError("Preencha todos os campos!");
                 break;
-/*            case "O tamanho do grupo não pode estar vazio!":
+            case "O tamanho do grupo não pode estar vazio!":
                 sizeGroupsField.requestFocus();
                 sizeGroupsField.setError("Preencha todos os campos!");
                 break;
@@ -224,7 +224,7 @@ public class CreateClassActivity extends AppCompatActivity {
                 sizeGroupsField.requestFocus();
                 sizeGroupsField.setError("O tamanho do grupo não pode ser zero.");
                 break;
-*/
+
             case "Preencha o valor da nota de corte.":
                 cutOffField.requestFocus();
                 cutOffField.setError("Preencha todos os campos!");
