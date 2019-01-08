@@ -69,11 +69,11 @@ public class UserClass implements Serializable {
         setCutOff(cutOff);
         setPassword(password, passwordConfirm);
         setAddition(addition);
-//        setSizeGroups(sizeGroups);
+        setSizeGroups(sizeGroups);
     }
 
     public UserClass(String className, String classInstitution, Float classCutOff,
-                     String classPassword,String classpasswordConfirm, Float classAddition/*, Integer classSizeGroups*/,
+                     String classPassword,String classpasswordConfirm, Float classAddition, Integer classSizeGroups,
                      String classDescription, String classCreationDate, String idClassCreator,
                      String classCreatorName) throws UserException{
         setClassName(className);
@@ -81,7 +81,7 @@ public class UserClass implements Serializable {
         setCutOff(classCutOff);
         setPassword(classPassword, classpasswordConfirm);
         setAddition(classAddition);
-     //   setSizeGroups(classSizeGroups);
+        setSizeGroups(classSizeGroups);
         setDescription(classDescription);
         setCreationDate(classCreationDate);
         setIdClassCreator(idClassCreator);
@@ -125,11 +125,11 @@ public class UserClass implements Serializable {
     }
 
     public void setSizeGroups(int sizeGroups) throws UserException{
-        //if(sizeGroups > 0){
-        //    this.sizeGroups = sizeGroups;
-        //}else{
-        //    throw new UserException("O tamanho do grupo nao pode ser zero.");
-        //}
+        if(sizeGroups > 0){
+            this.sizeGroups = sizeGroups;
+        }else{
+            throw new UserException("O tamanho do grupo nao pode ser zero.");
+        }
     }
 
     public String getInstitution(){

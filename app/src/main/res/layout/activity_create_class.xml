@@ -131,7 +131,7 @@
                     </android.support.design.widget.TextInputLayout>
 
                     <!-- Institution -->
-                   <!-- <android.support.design.widget.TextInputLayout
+                   <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center">
@@ -147,7 +147,7 @@
                             android:paddingLeft="10dp"
                             />
 
-                    </android.support.design.widget.TextInputLayout>-->
+                    </android.support.design.widget.TextInputLayout>
 
 
                 </LinearLayout>
@@ -156,105 +156,105 @@
 
 
 
-            <!--&lt;!&ndash; Grade &ndash;&gt;-->
-            <!--<android.support.v7.widget.CardView-->
-                <!--card_view:cardCornerRadius="4dp"-->
-                <!--card_view:cardElevation="5dp"-->
-                <!--android:layout_marginRight="10dp"-->
-                <!--android:layout_marginLeft="10dp"-->
-                <!--android:layout_marginTop="10dp"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content">-->
+            <!-- Grade -->
+            <android.support.v7.widget.CardView
+                card_view:cardCornerRadius="4dp"
+                card_view:cardElevation="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_margin="15dp"-->
-                    <!--android:orientation="vertical">-->
-
-
-                    <!--&lt;!&ndash; Title &ndash;&gt;-->
-                    <!--<RelativeLayout-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:orientation="horizontal">-->
-
-                        <!--<TextView-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:text="Nota"-->
-                            <!--android:textSize="23dp"-->
-                            <!--android:textStyle="bold"/>-->
-
-                    <!--</RelativeLayout>-->
-
-                    <!--<View-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="1dp"-->
-                        <!--android:background="@android:color/darker_gray"></View>-->
-
-                    <!--&lt;!&ndash; Class Name &ndash;&gt;-->
-                    <!--<android.support.design.widget.TextInputLayout-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_gravity="center"-->
-                        <!--android:layout_marginTop="10dp">-->
-
-                        <!--<EditText-->
-                            <!--android:id="@+id/edit_text_cut_grade"-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:hint="Nota de Corte"-->
-                            <!--android:maxLength="3"-->
-
-                            <!--android:inputType="numberDecimal"-->
-                            <!--android:paddingLeft="10dp" />-->
-
-                    <!--</android.support.design.widget.TextInputLayout>-->
-
-                    <!--&lt;!&ndash; Institution &ndash;&gt;-->
-                    <!--<android.support.design.widget.TextInputLayout-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_gravity="center">-->
-
-                        <!--<EditText-->
-                            <!--android:inputType="numberDecimal"-->
-                            <!--android:id="@+id/edit_text_addition"-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:maxLength="3"-->
-
-                            <!--android:hint="Acréscimo"-->
-                            <!--android:paddingLeft="10dp"-->
-                            <!--/>-->
-
-                    <!--</android.support.design.widget.TextInputLayout>-->
-
-                    <!--<RelativeLayout-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:orientation="vertical">-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="15dp"
+                    android:orientation="vertical">
 
 
-                        <!--<ImageView-->
-                            <!--android:layout_marginTop="3dp"-->
-                            <!--android:layout_width="25dp"-->
-                            <!--android:layout_height="25dp"-->
-                            <!--android:src="@drawable/ic_sobre"/>-->
+                    <!-- Title -->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-                        <!--<TextView-->
-                            <!--android:layout_marginTop="8dp"-->
-                            <!--android:layout_width="match_parent"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:text="        Acréscimo é a nota máxima em que pode ser adicionada a nota do aluno de acordo com seu rendimento."/>-->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Nota"
+                            android:textSize="23dp"
+                            android:textStyle="bold"/>
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"></View>
+
+                    <!-- Class Name -->
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp">
+
+                        <EditText
+                            android:id="@+id/edit_text_cut_grade"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Nota de Corte"
+                            android:maxLength="3"
+
+                            android:inputType="numberDecimal"
+                            android:paddingLeft="10dp" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <!-- Institution -->
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center">
+
+                        <EditText
+                            android:inputType="numberDecimal"
+                            android:id="@+id/edit_text_addition"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLength="3"
+
+                            android:hint="Acréscimo"
+                            android:paddingLeft="10dp"
+                            />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
 
-                    <!--</RelativeLayout>-->
+                        <ImageView
+                            android:layout_marginTop="3dp"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/ic_sobre"/>
 
-                <!--</LinearLayout>-->
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="        Acréscimo é a nota máxima em que pode ser adicionada a nota do aluno de acordo com seu rendimento."/>
 
-            <!--</android.support.v7.widget.CardView>-->
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
 
 
             <!-- Security -->
