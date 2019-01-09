@@ -18,9 +18,9 @@ public class InfoClassFragment extends Fragment {
     private TextView className;
     private TextView institution;
     private TextView classPassword;
-    private TextView cutGrade;
-    private TextView groupsSize;
-    private TextView addition;
+    //private TextView cutGrade;
+    //private TextView groupsSize;
+    //private TextView addition;
 
     private View view;
 
@@ -54,17 +54,17 @@ public class InfoClassFragment extends Fragment {
         className = view.findViewById(R.id.text_view_class_name_x);
         institution = view.findViewById(R.id.text_view_institution_x);
         classPassword = view.findViewById(R.id.text_view_class_password_x);
-        cutGrade = view.findViewById(R.id.text_view_cut_grade_x);
-        groupsSize = view.findViewById(R.id.text_view_size_groups_x);
-        addition = view.findViewById(R.id.text_view_addition_x);
+        //cutGrade = view.findViewById(R.id.text_view_cut_grade_x);
+        //groupsSize = view.findViewById(R.id.text_view_size_groups_x);
+        //addition = view.findViewById(R.id.text_view_addition_x);
     }
 
     private void initFillFields(){
         className.setText(userClass.getClassName());
         institution.setText(userClass.getInstitution());
         classPassword.setText(userClass.getPassword());
-        cutGrade.setText(String.valueOf(userClass.getCutOff()));
-        groupsSize.setText(String.valueOf(userClass.getSizeGroups()));
-        addition.setText(String.valueOf(userClass.getAddition()));
+        //cutGrade.setText(String.valueOf(userClass.getCutOff()));
+        //groupsSize.setText(String.valueOf(userClass.getSizeGroups()));
+        //addition.setText(String.valueOf(userClass.getAddition()));
     }
 }
