@@ -41,7 +41,7 @@
                     android:id="@+id/btn_grade_details"
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
-                    android:background="#FFF"
+                    android:background="@color/transparent"
                     android:text="Detalhes da nota"
                     android:layout_alignParentRight="true"/>
             </RelativeLayout>
