@@ -6,8 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".trezentos.View.Activity.GradleDetailsActivity">
     <HorizontalScrollView
+        android:id="@+id/sv_gradle_details"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <TableLayout
             android:layout_width="match_parent"
@@ -604,4 +605,13 @@
 
         </TableLayout>
     </HorizontalScrollView>
+
+    <Button
+        android:id="@+id/btn_save_gradle"
+        android:background="@color/transparent"
+        android:layout_below="@id/sv_gradle_details"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="salvar"/>
 </RelativeLayout>

@@ -175,7 +175,7 @@
                             android:layout_gravity="center"
                             android:text="0.00"
                             android:textColor="#262626"
-                            0android:textStyle="bold" />
+                            android:textStyle="bold" />
 
                         <View
                             android:layout_width="1dp"
