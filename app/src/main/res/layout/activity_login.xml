@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
- <LinearLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:facebook="http://schemas.android.com/apk/res-auto"
@@ -16,7 +16,7 @@
         android:id="@+id/logo_image"
         android:src="@drawable/trezentoslogo"
         android:layout_gravity="center"
-         />
+        />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="360dp"
@@ -96,41 +96,63 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        android:weightSum="3">
+        android:orientation="vertical"
+        android:layout_marginTop="20dp">
 
-        <Button
-            android:layout_weight="1"
-            android:id="@+id/button_register"
-            android:background="@android:color/transparent"
-            android:text="@string/btn_login_to_sign_up"
-            android:textColor="#000"
-            android:textSize="13sp"
-            android:layout_width="88dp"
-            android:layout_height="48dp"
-            android:layout_marginRight="8dp"
-            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+            <Button
+                android:layout_marginRight="40dp"
+                android:layout_weight="1"
+                android:id="@+id/button_register"
+                android:background="@drawable/rounded_register_button"
+                android:text="@string/btn_login_to_sign_up"
+                android:textColor="#FFF"
+                android:textSize="13sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
 
-        <Button
-            android:layout_weight="1"
-            android:id="@+id/button_about"
-            android:layout_width="88dp"
-            android:layout_height="48dp"
-            android:background="@android:color/transparent"
-            android:text="@string/btn_about"
-            android:textColor="#000"/>
+            <Button
+                android:id="@+id/button_about"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_register_button"
+                android:text="@string/btn_about"
+                android:textColor="#FFF" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_marginRight="40dp"
+                android:layout_weight="1"
+                android:id="@+id/button_methodology"
+                android:layout_width="88dp"
+                android:layout_height="48dp"
+                android:background="@drawable/rounded_register_button"
+                android:text="metodologia"
+                android:textColor="#FFF"/>
 
 
-        <Button
-            android:layout_weight="1"
-            android:id="@+id/button_forgot_password"
-            android:layout_width="88dp"
-            android:layout_height="48dp"
-            android:background="@android:color/transparent"
-            android:text="@string/btn_forgot_password"
-            android:textColor="#000"
-            />
+            <Button
+                android:id="@+id/button_forgot_password"
+                android:layout_width="88dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_register_button"
+                android:text="@string/btn_forgot_password"
+                android:textColor="#FFF" />
+
+        </LinearLayout>
+
+
 
 
     </LinearLayout>
