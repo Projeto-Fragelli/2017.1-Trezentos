@@ -114,7 +114,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 startActivity(intent);
                 break;
 
-            case R.id.button_about:
+            case R.id.button_methodology:
                 // Go to about screen
                 Intent showAbout = new Intent(getApplicationContext(), TutorialActivity.class);
                 startActivity(showAbout);
@@ -166,7 +166,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         login = findViewById(R.id.button_login);
         forgotPassword = findViewById(R.id.button_forgot_password);
         register = findViewById(R.id.button_register);
-        about = findViewById(R.id.button_about);
+        about = findViewById(R.id.button_methodology);
 
         progressBar = findViewById(R.id.progressBar);
 
