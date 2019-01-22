@@ -45,6 +45,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     private Button forgotPassword = null;
     private Button register = null;
     private Button about = null;
+    private Button btnTutorial = null;
 
     private ProgressBar progressBar = null;
 
@@ -116,8 +117,13 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
             case R.id.button_methodology:
                 // Go to about screen
-                Intent showAbout = new Intent(getApplicationContext(), TutorialActivity.class);
+                Intent showAbout = new Intent(getApplicationContext(), AboutActivity.class);
                 startActivity(showAbout);
+                break;
+            case R.id.button_about:
+                // Go to about screen
+                Intent showTutorial = new Intent(getApplicationContext(), TutorialActivity.class);
+                startActivity(showTutorial);
                 break;
         }
     }
@@ -167,6 +173,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         forgotPassword = findViewById(R.id.button_forgot_password);
         register = findViewById(R.id.button_register);
         about = findViewById(R.id.button_methodology);
+        btnTutorial = findViewById(R.id.button_about);
 
         progressBar = findViewById(R.id.progressBar);
 
@@ -177,6 +184,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         register.setOnClickListener(this);
         about.setOnClickListener(this);
         forgotPassword.setOnClickListener(this);
+        btnTutorial.setOnClickListener(this);
     }
 
 
