@@ -68,7 +68,7 @@ public class UserClassControl {
     }
 
     public String validateCreateClass(String className, String classInstitution, String classCutOff,
-                                    String classPassword,String classPasswordConfirm, String classAddition, String classSizeGroups,
+                                    String classPassword,String classPasswordConfirm/*, String classAddition, String classSizeGroups*/,
                                     String classDescription, String classCreationDate, String idClassCreator,
                                     String classCreatorName) throws UserException {
 
@@ -79,12 +79,18 @@ public class UserClassControl {
             }
             if (classCutOff == null || classCutOff.isEmpty()){
                 throw new UserException("Preencha o valor da nota de corte.");
-            }else if (classAddition == null || classAddition.isEmpty()){
-                throw new UserException("Preencha o valor do acréscimo.");
             }
+//            else if (classAddition == null || classAddition.isEmpty()){
+//                throw new UserException("Preencha o valor do acréscimo.");
+//            }
 
+<<<<<<< HEAD
             userClass = new UserClass(className, classInstitution, Float.valueOf(classCutOff), classPassword, classPasswordConfirm,
                     Float.valueOf(classAddition), Integer.valueOf(classSizeGroups), classDescription,classCreationDate, idClassCreator, classCreatorName);
+=======
+            userClass = new UserClass(className, classInstitution, Float.valueOf(classCutOff), classPassword, classPasswordConfirm/*,
+                    Float.valueOf(classAddition), Integer.valueOf(classSizeGroups)*/, classDescription,classCreationDate, idClassCreator, classCreatorName);
+>>>>>>> Improve usability on test screen.
         }catch (UserException e){
             return e.getMessage();
         }
