@@ -74,9 +74,9 @@ public class UserClassControl {
 
         try {
 
-            if (classSizeGroups == null || classSizeGroups.isEmpty()){
-                throw new UserException("O tamanho do grupo não pode estar vazio!");
-            }
+       //     if (classSizeGroups == null || classSizeGroups.isEmpty()){
+         //       throw new UserException("O tamanho do grupo não pode estar vazio!");
+           // }
             if (classCutOff == null || classCutOff.isEmpty()){
                 throw new UserException("Preencha o valor da nota de corte.");
             }
@@ -84,13 +84,8 @@ public class UserClassControl {
 //                throw new UserException("Preencha o valor do acréscimo.");
 //            }
 
-<<<<<<< HEAD
-            userClass = new UserClass(className, classInstitution, Float.valueOf(classCutOff), classPassword, classPasswordConfirm,
-                    Float.valueOf(classAddition), Integer.valueOf(classSizeGroups), classDescription,classCreationDate, idClassCreator, classCreatorName);
-=======
             userClass = new UserClass(className, classInstitution, Float.valueOf(classCutOff), classPassword, classPasswordConfirm/*,
                     Float.valueOf(classAddition), Integer.valueOf(classSizeGroups)*/, classDescription,classCreationDate, idClassCreator, classCreatorName);
->>>>>>> Improve usability on test screen.
         }catch (UserException e){
             return e.getMessage();
         }
