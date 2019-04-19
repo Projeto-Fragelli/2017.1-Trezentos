@@ -6,6 +6,7 @@ import android.content.SearchRecentSuggestionsProvider;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -116,12 +117,12 @@ public class ExamActivity extends AppCompatActivity {
                 serverResponse = saveGrades(2);
                 break;
             }
-            case R.id.action_sort_groups:{
-//                Bundle bundle = new Bundle();
-//                bundle = buildBundleToSortGroups(bundle);
-//                initFragmentTransation(bundle);
-                break;
-            }
+//            case R.id.action_sort_groups:{
+////                Bundle bundle = new Bundle();
+////                bundle = buildBundleToSortGroups(bundle);
+////                initFragmentTransation(bundle);
+//                break;
+//            }
             case R.id.action_send_evaluation: {
                 break;
             }

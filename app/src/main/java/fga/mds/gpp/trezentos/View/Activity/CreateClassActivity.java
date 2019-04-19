@@ -86,8 +86,8 @@ public class CreateClassActivity extends AppCompatActivity {
                             institutionField.getText().toString(), "5.0",
                             passwordField.getText().toString(),
                             passwordFieldConfirmation.getText().toString(),
-                            additionField.getText().toString(),
-                            sizeGroupsField.getText().toString(),
+                            /* additionField.getText().toString(),
+                            sizeGroupsField.getText().toString(),*/
                             descriptionField.getText().toString(),
                             dateCreation,
                             userId,

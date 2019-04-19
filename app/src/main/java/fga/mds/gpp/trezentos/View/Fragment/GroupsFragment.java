@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ import fga.mds.gpp.trezentos.Controller.GroupController;
 import fga.mds.gpp.trezentos.Model.Exam;
 import fga.mds.gpp.trezentos.Model.UserClass;
 import fga.mds.gpp.trezentos.R;
+import fga.mds.gpp.trezentos.View.Activity.GradleDetailsActivity;
 import fga.mds.gpp.trezentos.View.RecyclerViewOnClickListener;
 
 public class GroupsFragment  extends Fragment implements RecyclerViewOnClickListener {
@@ -41,6 +43,8 @@ public class GroupsFragment  extends Fragment implements RecyclerViewOnClickList
     private ProgressBar progressBar;
     private UserClass userClass;
     private TextView groupWarning;
+    private Button btnBuildGrouops;
+    private TextView tvBuildGroups;
 
     @Override
     public void onResume() {
@@ -63,8 +67,24 @@ public class GroupsFragment  extends Fragment implements RecyclerViewOnClickList
 //        progressBar.setVisibility(View.VISIBLE);
 
         groupWarning = (TextView) view.findViewById(R.id.not_defined_groups);
+        btnBuildGrouops = view.findViewById(R.id.btn_build_groups);
+        tvBuildGroups = view.findViewById(R.id.tv_build_groups);
 
 
+//        VERIFICAR SE JÁ EXISTE GRUPOS
+        try {
+            if (!(userClass.getStudents().size() < userClass.getSizeGroups())) {
+                tvBuildGroups.setVisibility(View.VISIBLE);
+                btnBuildGrouops.setVisibility(View.VISIBLE);
+            } else {
+                tvBuildGroups
+                        .setVisibility(View.GONE);
+                btnBuildGrouops.setVisibility(View.GONE);
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_groups);
         recyclerView.setVisibility(View.VISIBLE);
@@ -84,11 +104,7 @@ public class GroupsFragment  extends Fragment implements RecyclerViewOnClickList
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if(userClass.getStudents().size() < userClass.getSizeGroups()) {
-            menu.findItem(R.id.action_sort_groups).setVisible(false);
-        } else {
-            menu.findItem(R.id.action_sort_groups).setVisible(true);
-        }
+
     }
 
     private void checkGroups() {
@@ -173,6 +189,7 @@ public class GroupsFragment  extends Fragment implements RecyclerViewOnClickList
         private final Context context;
         private final UserClass userClass;
         private  RecyclerView recyclerView;
+        private Button btnDetails;
 
 
         Adapter(Map<String, Integer> groupses, Context context, UserClass userClass,
@@ -189,6 +206,13 @@ public class GroupsFragment  extends Fragment implements RecyclerViewOnClickList
             View view = LayoutInflater.from(context).inflate(R.layout.groups_item, parent, false);
             GroupsFragment.ViewHolder holder = new GroupsFragment.ViewHolder(view);
             view.setOnClickListener(this);
+            holder.btnDetails.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context,GradleDetailsActivity.class);
+                    startActivity(intent);
+                }
+            });
 
             return holder;
         }
@@ -249,11 +273,14 @@ public class GroupsFragment  extends Fragment implements RecyclerViewOnClickList
         TextView groupTitle;
         TextView helpers;
         TextView helped;
+        Button btnDetails;
+
 
         ViewHolder(View view) {
             super(view);
             groupTitle = (TextView) view.findViewById(R.id.group_number);
             helpers = (TextView) view.findViewById(R.id.helpers1);
+            btnDetails = view.findViewById(R.id.btn_grade_details);
             //helped = (TextView) view.findViewById(R.id.helped1);
         }
     }

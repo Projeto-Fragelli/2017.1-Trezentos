@@ -17,8 +17,8 @@ public class UserClass implements Serializable {
     private String description;
     private float cutOff;
     private String password;
-    private float addition;
-    private int sizeGroups;
+    private float addition = (float) 0.5;
+    private int sizeGroups = 10;
     private String creatorName;
     private String creationDate;
     private String idClassCreator;
@@ -73,15 +73,15 @@ public class UserClass implements Serializable {
     }
 
     public UserClass(String className, String classInstitution, Float classCutOff,
-                     String classPassword,String classpasswordConfirm, Float classAddition, Integer classSizeGroups,
+                     String classPassword,String classpasswordConfirm/*, Float classAddition, Integer classSizeGroups*/,
                      String classDescription, String classCreationDate, String idClassCreator,
                      String classCreatorName) throws UserException{
         setClassName(className);
         setInstitution(classInstitution);
         setCutOff(classCutOff);
         setPassword(classPassword, classpasswordConfirm);
-        setAddition(classAddition);
-        setSizeGroups(classSizeGroups);
+        //  setAddition(classAddition);
+        //  setSizeGroups(classSizeGroups);
         setDescription(classDescription);
         setCreationDate(classCreationDate);
         setIdClassCreator(idClassCreator);

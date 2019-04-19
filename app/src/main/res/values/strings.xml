@@ -150,4 +150,6 @@
     <string name="out_of_class">Sair da sala</string>
     <string name="salas_favoritas">Salas favoritas</string>
     <string name="logout">Logout</string>
+    <string name="salvar_notas">Salvar Notas</string>
+    <string name="salvar_notas_300">Salvar Notas 300</string>
 </resources>
